@@ -1260,6 +1260,9 @@
         }
 
         @media (max-width: 700px) {
+            .sidebar {
+                display: none;
+            }
             .main {
                 margin-left: 0;
             }
@@ -1267,218 +1270,10 @@
                 padding: 25px;
             }
         }
-
-        /* Mobile Bottom Tab Bar */
-        .mobile-tabs {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #1A1612;
-            border-top: 1px solid rgba(193, 154, 107, 0.3);
-            z-index: 1000;
-            padding: 8px 0;
-            padding-bottom: env(safe-area-inset-bottom, 8px);
-        }
-
-        .mobile-tabs-inner {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .mobile-tab {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 8px 12px;
-            color: rgba(247, 243, 237, 0.5);
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-family: inherit;
-            font-size: 10px;
-            min-width: 60px;
-        }
-
-        .mobile-tab-icon {
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
-
-        .mobile-tab.active {
-            color: var(--gold);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .mobile-tabs {
-                display: block;
-            }
-
-            .sidebar {
-                display: none !important;
-            }
-
-            .main {
-                margin-left: 0;
-                padding-bottom: 80px;
-            }
-
-            .view {
-                padding: 20px;
-                padding-bottom: 100px;
-            }
-
-            .page-header h1 {
-                font-size: 1.6rem;
-            }
-
-            .morning-date {
-                font-size: 2rem;
-            }
-
-            .morning-verse blockquote {
-                font-size: 1.2rem;
-            }
-
-            .morning-stats {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-
-            .stat-value {
-                font-size: 1.5rem;
-            }
-
-            .card {
-                padding: 18px;
-            }
-
-            .question-container {
-                padding: 25px 20px;
-            }
-
-            .question-text {
-                font-size: 1.2rem;
-            }
-
-            .wizard-progress {
-                overflow-x: auto;
-                padding-bottom: 10px;
-            }
-
-            .wizard-nav {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .wizard-nav .btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .btn {
-                padding: 14px 24px;
-            }
-
-            .briefing-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .reports-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .agents-expandable, .checklist-content {
-                padding: 15px;
-            }
-
-            .sprint-timeline {
-                padding-left: 20px;
-            }
-
-            .sprint-phase-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-
-            .options-grid {
-                gap: 10px;
-            }
-
-            .option {
-                padding: 14px;
-            }
-
-            .mood-boards-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .direction-card {
-                padding: 20px;
-            }
-
-            .artist-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .artist-image {
-                height: 100px;
-            }
-
-            .palette-colors {
-                flex-wrap: wrap;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .morning-stats {
-                grid-template-columns: 1fr;
-            }
-
-            .stat-card {
-                padding: 15px;
-            }
-
-            .artist-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="app">
-        <!-- Mobile Bottom Tab Bar -->
-        <nav class="mobile-tabs">
-            <div class="mobile-tabs-inner">
-                <button class="mobile-tab active" data-view="morning">
-                    <span class="mobile-tab-icon">☀</span>
-                    <span>Today</span>
-                </button>
-                <button class="mobile-tab" data-view="sprint">
-                    <span class="mobile-tab-icon">◎</span>
-                    <span>Sprint</span>
-                </button>
-                <button class="mobile-tab" data-view="status">
-                    <span class="mobile-tab-icon">▣</span>
-                    <span>Status</span>
-                </button>
-                <button class="mobile-tab" data-view="checklist">
-                    <span class="mobile-tab-icon">✓</span>
-                    <span>Checklist</span>
-                </button>
-                <button class="mobile-tab" data-view="discovery">
-                    <span class="mobile-tab-icon">◉</span>
-                    <span>More</span>
-                </button>
-            </div>
-        </nav>
-
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="sidebar-brand">
@@ -3522,33 +3317,13 @@ Please start with step 1. After each step, verify it works before moving to the 
     </div>
 
     <script>
-        // Navigation - Desktop sidebar
+        // Navigation
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
                 this.classList.add('active');
                 document.getElementById(this.dataset.view).classList.add('active');
-                // Sync mobile tab
-                const mobileTab = document.querySelector('.mobile-tab[data-view="' + this.dataset.view + '"]');
-                if (mobileTab) mobileTab.classList.add('active');
-            });
-        });
-
-        // Navigation - Mobile tabs
-        document.querySelectorAll('.mobile-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                this.classList.add('active');
-                document.getElementById(this.dataset.view).classList.add('active');
-                // Sync desktop nav
-                const navItem = document.querySelector('.nav-item[data-view="' + this.dataset.view + '"]');
-                if (navItem) navItem.classList.add('active');
-                // Scroll to top
-                window.scrollTo(0, 0);
             });
         });
 
