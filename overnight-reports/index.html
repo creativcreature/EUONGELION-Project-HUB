@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EUONGELION - Overnight Reports Index</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tehom: #1A1612;
+            --scroll: #F7F3ED;
+            --scroll-dark: #E8E4DE;
+            --gold: #C19A6B;
+            --gold-dark: #8B6914;
+            --gold-light: #D4B896;
+            --text-primary: #1A1612;
+            --text-secondary: #5C5347;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            background-color: var(--tehom);
+            color: var(--scroll);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 60px 40px 40px;
+            border-bottom: 1px solid rgba(193, 154, 107, 0.2);
+            background: linear-gradient(180deg, rgba(193, 154, 107, 0.05) 0%, transparent 100%);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--scroll);
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: rgba(247, 243, 237, 0.6);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(247, 243, 237, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Search */
+        .search-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            font-family: 'EB Garamond', Georgia, serif;
+            font-size: 1.1rem;
+            background: rgba(247, 243, 237, 0.05);
+            border: 1px solid rgba(193, 154, 107, 0.3);
+            border-radius: 8px;
+            color: var(--scroll);
+            transition: all 0.2s ease;
+        }
+
+        .search-box::placeholder {
+            color: rgba(247, 243, 237, 0.4);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(247, 243, 237, 0.08);
+        }
+
+        .search-results-count {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: rgba(247, 243, 237, 0.5);
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        /* Category Section */
+        .category {
+            margin-bottom: 30px;
+            border: 1px solid rgba(193, 154, 107, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(247, 243, 237, 0.02);
+        }
+
+        .category.hidden {
+            display: none;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            background: rgba(193, 154, 107, 0.08);
+            cursor: pointer;
+            transition: background 0.2s ease;
+            user-select: none;
+        }
+
+        .category-header:hover {
+            background: rgba(193, 154, 107, 0.12);
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .category-title h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin: 0;
+        }
+
+        .category-count {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            background: rgba(193, 154, 107, 0.2);
+            border-radius: 12px;
+            color: var(--scroll);
+        }
+
+        .category-toggle {
+            font-size: 1.2rem;
+            color: var(--gold);
+            transition: transform 0.3s ease;
+        }
+
+        .category.collapsed .category-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .category.collapsed .category-content {
+            display: none;
+        }
+
+        .category-content {
+            padding: 10px 0;
+        }
+
+        /* Report Item */
+        .report {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 25px;
+            border-bottom: 1px solid rgba(193, 154, 107, 0.1);
+            transition: background 0.2s ease;
+        }
+
+        .report:last-child {
+            border-bottom: none;
+        }
+
+        .report:hover {
+            background: rgba(193, 154, 107, 0.05);
+        }
+
+        .report.hidden {
+            display: none;
+        }
+
+        .report-number {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gold);
+            min-width: 35px;
+            opacity: 0.7;
+        }
+
+        .report-info {
+            flex: 1;
+        }
+
+        .report-link {
+            font-size: 1.1rem;
+            color: var(--scroll);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .report-link:hover {
+            color: var(--gold);
+        }
+
+        .report-description {
+            font-size: 0.9rem;
+            color: rgba(247, 243, 237, 0.6);
+            font-style: italic;
+        }
+
+        .report-meta {
+            text-align: right;
+            min-width: 80px;
+        }
+
+        .report-size {
+            font-size: 0.8rem;
+            color: rgba(247, 243, 237, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(193, 154, 107, 0.2);
+            color: rgba(247, 243, 237, 0.4);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Quick Jump */
+        .quick-jump {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px auto;
+            padding: 0 20px;
+            max-width: 900px;
+        }
+
+        .quick-jump a {
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            background: rgba(193, 154, 107, 0.1);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+            border-radius: 20px;
+            color: var(--scroll);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .quick-jump a:hover {
+            background: rgba(193, 154, 107, 0.2);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(247, 243, 237, 0.5);
+            display: none;
+        }
+
+        .no-results.visible {
+            display: block;
+        }
+
+        .no-results h3 {
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 20px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-bar {
+                gap: 20px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .report {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .report-meta {
+                text-align: left;
+            }
+
+            .category-header {
+                padding: 15px 20px;
+            }
+
+            .report {
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Overnight Reports</h1>
+        <p class="subtitle">EUONGELION Project Documentation</p>
+        <p>Comprehensive analysis, planning documents, and reference materials generated for the EUONGELION devotional application.</p>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-value">83</div>
+                <div class="stat-label">Total Reports</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">10</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">2026</div>
+                <div class="stat-label">Generated</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <input type="text" class="search-box" id="searchBox" placeholder="Search reports by name, category, or description...">
+        <div class="search-results-count" id="resultsCount"></div>
+    </div>
+
+    <nav class="quick-jump">
+        <a href="#code-analysis">Code Analysis</a>
+        <a href="#documentation">Documentation</a>
+        <a href="#content">Content</a>
+        <a href="#planning">Planning</a>
+        <a href="#research">Research</a>
+        <a href="#design-system">Design System</a>
+        <a href="#assets">Assets</a>
+        <a href="#database">Database</a>
+        <a href="#marketing">Marketing</a>
+        <a href="#testing">Testing</a>
+    </nav>
+
+    <main class="main">
+        <div class="no-results" id="noResults">
+            <h3>No Reports Found</h3>
+            <p>Try adjusting your search terms or browse by category.</p>
+        </div>
+
+        <!-- Code Analysis (01-20) -->
+        <section class="category" id="code-analysis">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Code Analysis</h2>
+                    <span class="category-count">20 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="tech debt audit critical build typescript eslint configuration">
+                    <span class="report-number">01</span>
+                    <div class="report-info">
+                        <a href="code-analysis/01-tech-debt-audit.md" class="report-link">Tech Debt Audit</a>
+                        <div class="report-description">Identifies technical debt by severity, including build configuration issues and unimplemented TODO items</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="architecture map directory structure next.js app router">
+                    <span class="report-number">02</span>
+                    <div class="report-info">
+                        <a href="code-analysis/02-codebase-architecture-map.md" class="report-link">Codebase Architecture Map</a>
+                        <div class="report-description">Next.js 15 App Router architecture overview with directory structure and separation of concerns</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="component inventory react ui shared orphaned">
+                    <span class="report-number">03</span>
+                    <div class="report-info">
+                        <a href="code-analysis/03-component-inventory.md" class="report-link">Component Inventory</a>
+                        <div class="report-description">Catalogs all ~120 React components, their usage patterns, and identifies orphaned components</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~18 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="api route documentation crud endpoints rest">
+                    <span class="report-number">04</span>
+                    <div class="report-info">
+                        <a href="code-analysis/04-api-route-documentation.md" class="report-link">API Route Documentation</a>
+                        <div class="report-description">Documents all 10 API routes with CRUD operations for devotionals, series, user progress, and more</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="accessibility audit wcag aria keyboard navigation">
+                    <span class="report-number">05</span>
+                    <div class="report-info">
+                        <a href="code-analysis/05-accessibility-audit.md" class="report-link">Accessibility Audit</a>
+                        <div class="report-description">WCAG 2.1 AA compliance review with dedicated a11y components and improvement recommendations</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="design token audit tailwind colors typography spacing">
+                    <span class="report-number">06</span>
+                    <div class="report-info">
+                        <a href="code-analysis/06-design-token-audit.md" class="report-link">Design Token Audit</a>
+                        <div class="report-description">Reviews Tailwind design token system usage and identifies deviations from brand colors</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="pattern consistency exports props styling conventions">
+                    <span class="report-number">07</span>
+                    <div class="report-info">
+                        <a href="code-analysis/07-pattern-consistency-audit.md" class="report-link">Pattern Consistency Audit</a>
+                        <div class="report-description">Evaluates code pattern consistency for exports, props typing, and styling conventions</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="performance analysis memoization image optimization bundle">
+                    <span class="report-number">08</span>
+                    <div class="report-info">
+                        <a href="code-analysis/08-performance-analysis.md" class="report-link">Performance Analysis</a>
+                        <div class="report-description">Performance foundations including memoization, image optimization, and service worker support</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="security scan sanitization owasp headers csrf rate limiting">
+                    <span class="report-number">09</span>
+                    <div class="report-info">
+                        <a href="code-analysis/09-security-scan.md" class="report-link">Security Scan</a>
+                        <div class="report-description">Security review covering input sanitization, OWASP headers, and authentication patterns</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="typescript coverage type safety strict typing">
+                    <span class="report-number">10</span>
+                    <div class="report-info">
+                        <a href="code-analysis/10-typescript-coverage.md" class="report-link">TypeScript Coverage</a>
+                        <div class="report-description">Excellent TypeScript coverage report with no type escape hatches and strict typing patterns</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~10 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="error handling audit boundaries custom classes api protection">
+                    <span class="report-number">11</span>
+                    <div class="report-info">
+                        <a href="code-analysis/11-error-handling-audit.md" class="report-link">Error Handling Audit</a>
+                        <div class="report-description">Reviews error boundaries, custom error classes, and API route protection implementation</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~13 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="mobile responsiveness audit tailwind fixed width touch targets">
+                    <span class="report-number">12</span>
+                    <div class="report-info">
+                        <a href="code-analysis/12-mobile-responsiveness-audit.md" class="report-link">Mobile Responsiveness Audit</a>
+                        <div class="report-description">Mobile-first practices review including Tailwind responsive classes and touch target sizes</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="pwa audit next-pwa manifest offline caching service worker">
+                    <span class="report-number">13</span>
+                    <div class="report-info">
+                        <a href="code-analysis/13-pwa-audit.md" class="report-link">PWA Audit</a>
+                        <div class="report-description">Comprehensive PWA setup review using next-pwa with runtime caching and offline support</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="seo audit metadata sitemap robots open graph">
+                    <span class="report-number">14</span>
+                    <div class="report-info">
+                        <a href="code-analysis/14-seo-audit.md" class="report-link">SEO Audit</a>
+                        <div class="report-description">Excellent SEO foundation with metadata configuration, structured data, and Open Graph support</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="dependency audit package.json npm react next.js bundle size">
+                    <span class="report-number">15</span>
+                    <div class="report-info">
+                        <a href="code-analysis/15-dependency-audit.md" class="report-link">Dependency Audit</a>
+                        <div class="report-description">Lean dependency set analysis with Next.js 15, React 19, and bundle optimization opportunities</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~11 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="import export analysis barrel files path aliases tree-shaking">
+                    <span class="report-number">16</span>
+                    <div class="report-info">
+                        <a href="code-analysis/16-import-export-analysis.md" class="report-link">Import/Export Analysis</a>
+                        <div class="report-description">Module structure review with barrel files, path aliases, and tree-shaking optimization</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~13 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="zustand store analysis state management middleware persistence">
+                    <span class="report-number">17</span>
+                    <div class="report-info">
+                        <a href="code-analysis/17-zustand-store-analysis.md" class="report-link">Zustand Store Analysis</a>
+                        <div class="report-description">Analysis of 5 Zustand stores with persistence, logging, devtools, and typed selectors</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="supabase query analysis database auth rls n+1">
+                    <span class="report-number">18</span>
+                    <div class="report-info">
+                        <a href="code-analysis/18-supabase-query-analysis.md" class="report-link">Supabase Query Analysis</a>
+                        <div class="report-description">Supabase auth integration and database query patterns with RLS optimization recommendations</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="environment variable audit env config vapid keys sensitive">
+                    <span class="report-number">19</span>
+                    <div class="report-info">
+                        <a href="code-analysis/19-environment-variable-audit.md" class="report-link">Environment Variable Audit</a>
+                        <div class="report-description">Documents 26 environment variables across Supabase, SEO, notifications, and security</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="console log cleanup debug production deployment">
+                    <span class="report-number">20</span>
+                    <div class="report-info">
+                        <a href="code-analysis/20-console-log-cleanup-list.md" class="report-link">Console.log Cleanup List</a>
+                        <div class="report-description">Categorizes 196 console statements across 57 files for production deployment cleanup</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~18 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation (21-30) -->
+        <section class="category" id="documentation">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Documentation</h2>
+                    <span class="category-count">10 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="database schema documentation supabase postgresql tables">
+                    <span class="report-number">21</span>
+                    <div class="report-info">
+                        <a href="documentation/21-database-schema-documentation.md" class="report-link">Database Schema Documentation</a>
+                        <div class="report-description">Supabase PostgreSQL schema for user profiles, devotionals, progress tracking, and Soul Audit</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="rls policy documentation row level security access control">
+                    <span class="report-number">22</span>
+                    <div class="report-info">
+                        <a href="documentation/22-rls-policy-documentation.md" class="report-link">RLS Policy Documentation</a>
+                        <div class="report-description">Row Level Security policies for data access control using Supabase auth functions</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="api reference guide rest endpoints authentication headers">
+                    <span class="report-number">23</span>
+                    <div class="report-info">
+                        <a href="documentation/23-api-reference-guide.md" class="report-link">API Reference Guide</a>
+                        <div class="report-description">RESTful API documentation for Next.js 15 App Router with authentication requirements</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~20 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="component documentation react typescript tailwind sacred minimalism">
+                    <span class="report-number">24</span>
+                    <div class="report-info">
+                        <a href="documentation/24-component-documentation.md" class="report-link">Component Documentation</a>
+                        <div class="report-description">Modular component architecture with React 19, TypeScript, and Tailwind CSS patterns</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~22 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="state management guide zustand hooks client-side">
+                    <span class="report-number">25</span>
+                    <div class="report-info">
+                        <a href="documentation/25-state-management-guide.md" class="report-link">State Management Guide</a>
+                        <div class="report-description">Zustand state management patterns with hooks integration and Next.js server components</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="authentication flow documentation supabase auth oauth email">
+                    <span class="report-number">26</span>
+                    <div class="report-info">
+                        <a href="documentation/26-authentication-flow-documentation.md" class="report-link">Authentication Flow Documentation</a>
+                        <div class="report-description">Supabase Auth flows for email/password, OAuth (Google, Apple), and anonymous sessions</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~18 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="deployment guide vercel supabase production environment">
+                    <span class="report-number">27</span>
+                    <div class="report-info">
+                        <a href="documentation/27-deployment-guide.md" class="report-link">Deployment Guide</a>
+                        <div class="report-description">Complete Vercel deployment process with Supabase backend and environment configuration</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="local development guide setup node npm git">
+                    <span class="report-number">28</span>
+                    <div class="report-info">
+                        <a href="documentation/28-local-development-guide.md" class="report-link">Local Development Guide</a>
+                        <div class="report-description">Step-by-step setup instructions from cloning to running the application locally</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="architecture decision records adr next.js framework choices">
+                    <span class="report-number">29</span>
+                    <div class="report-info">
+                        <a href="documentation/29-architecture-decision-records.md" class="report-link">Architecture Decision Records</a>
+                        <div class="report-description">Key architectural decisions with context, rationale, and consequences for each choice</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="troubleshooting guide common issues build errors debugging">
+                    <span class="report-number">30</span>
+                    <div class="report-info">
+                        <a href="documentation/30-troubleshooting-guide.md" class="report-link">Troubleshooting Guide</a>
+                        <div class="report-description">Common issues during development, deployment, and production with quick solutions</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content (31-40) -->
+        <section class="category" id="content">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Content</h2>
+                    <span class="category-count">10 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="series descriptions devotional identity prayer trials faith">
+                    <span class="report-number">31</span>
+                    <div class="report-info">
+                        <a href="content/31-series-descriptions.md" class="report-link">Series Descriptions</a>
+                        <div class="report-description">Compelling 2-3 sentence descriptions for all planned and existing devotional series</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="devotional outlines chiastic structure scripture reflection">
+                    <span class="report-number">32</span>
+                    <div class="report-info">
+                        <a href="content/32-devotional-outlines.md" class="report-link">Devotional Outlines</a>
+                        <div class="report-description">10 devotional structural outlines using chiastic A-B-C-B'-A' pattern from Hebrew literature</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="soul audit question review spiritual assessment categories">
+                    <span class="report-number">33</span>
+                    <div class="report-info">
+                        <a href="content/33-soul-audit-question-review.md" class="report-link">Soul Audit Question Review</a>
+                        <div class="report-description">Review of 24 questions across 8 categories with improvements and new question proposals</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~18 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="welcome onboarding copy first-time user splash screen">
+                    <span class="report-number">34</span>
+                    <div class="report-info">
+                        <a href="content/34-welcome-onboarding-copy.md" class="report-link">Welcome & Onboarding Copy</a>
+                        <div class="report-description">First-time user experience copy including welcome screens and feature highlights</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="empty state copy friendly sacred-toned messages">
+                    <span class="report-number">35</span>
+                    <div class="report-info">
+                        <a href="content/35-empty-state-copy.md" class="report-link">Empty State Copy</a>
+                        <div class="report-description">Friendly, sacred-toned messages for empty states that invite action without judgment</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~10 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="error message copy user-friendly calm reassuring">
+                    <span class="report-number">36</span>
+                    <div class="report-info">
+                        <a href="content/36-error-message-copy.md" class="report-link">Error Message Copy</a>
+                        <div class="report-description">User-friendly error messages that acknowledge, reassure, and guide toward resolution</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~11 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="email template copy welcome password reset streak reminder">
+                    <span class="report-number">37</span>
+                    <div class="report-info">
+                        <a href="content/37-email-template-copy.md" class="report-link">Email Template Copy</a>
+                        <div class="report-description">Copy for welcome email, password reset, reading streak reminder, and announcements</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="push notification copy daily devotional reminder variations">
+                    <span class="report-number">38</span>
+                    <div class="report-info">
+                        <a href="content/38-push-notification-copy.md" class="report-link">Push Notification Copy</a>
+                        <div class="report-description">30 daily devotional reminder variations that invite without creating guilt or anxiety</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="app store description native release screenshots keywords">
+                    <span class="report-number">39</span>
+                    <div class="report-info">
+                        <a href="content/39-app-store-description.md" class="report-link">App Store Description</a>
+                        <div class="report-description">Draft app store listing for potential native app release with screenshots and keywords</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~13 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="social media copy instagram twitter facebook launch">
+                    <span class="report-number">40</span>
+                    <div class="report-info">
+                        <a href="content/40-social-media-copy.md" class="report-link">Social Media Copy</a>
+                        <div class="report-description">Platform bios and 10 launch announcement post variations for social media</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~11 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Planning (41-50) -->
+        <section class="category" id="planning">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Planning</h2>
+                    <span class="category-count">10 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="launch readiness checklist pre-launch features testing">
+                    <span class="report-number">41</span>
+                    <div class="report-info">
+                        <a href="planning/41-launch-readiness-checklist.md" class="report-link">Launch Readiness Checklist</a>
+                        <div class="report-description">Comprehensive checklist of everything required before public launch with sign-off tracking</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~20 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="qa test plan manual test cases steps expected results">
+                    <span class="report-number">42</span>
+                    <div class="report-info">
+                        <a href="planning/42-qa-test-plan.md" class="report-link">QA Test Plan</a>
+                        <div class="report-description">Manual test cases for every feature with steps, expected results, and device requirements</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~22 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="user flow maps application paths navigation decision points">
+                    <span class="report-number">43</span>
+                    <div class="report-info">
+                        <a href="planning/43-user-flow-maps.md" class="report-link">User Flow Maps</a>
+                        <div class="report-description">Documents every user path through the application with decision points and alternatives</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~18 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="feature prioritization matrix impact effort scoring">
+                    <span class="report-number">44</span>
+                    <div class="report-info">
+                        <a href="planning/44-feature-prioritization-matrix.md" class="report-link">Feature Prioritization Matrix</a>
+                        <div class="report-description">Rates all planned features by impact and effort scores to determine priority order</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="bug triage template categorizing reporting tracking status">
+                    <span class="report-number">45</span>
+                    <div class="report-info">
+                        <a href="planning/45-bug-triage-template.md" class="report-link">Bug Triage Template</a>
+                        <div class="report-description">Standardized template for categorizing, reporting, and tracking bugs with severity levels</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="sprint planning template development sprints goals backlog">
+                    <span class="report-number">46</span>
+                    <div class="report-info">
+                        <a href="planning/46-sprint-planning-template.md" class="report-link">Sprint Planning Template</a>
+                        <div class="report-description">Reusable template for planning development sprints with goals, tasks, and retrospectives</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="content pipeline documentation workflow devotional idea to live">
+                    <span class="report-number">47</span>
+                    <div class="report-info">
+                        <a href="planning/47-content-pipeline-documentation.md" class="report-link">Content Pipeline Documentation</a>
+                        <div class="report-description">Complete workflow for devotional content from idea through outline, review, to live in app</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="analytics event plan user actions tracking spiritual formation">
+                    <span class="report-number">48</span>
+                    <div class="report-info">
+                        <a href="planning/48-analytics-event-plan.md" class="report-link">Analytics Event Plan</a>
+                        <div class="report-description">Defines user actions to track for spiritual formation impact, not engagement manipulation</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="ab test ideas experiments optimize user experience post-launch">
+                    <span class="report-number">49</span>
+                    <div class="report-info">
+                        <a href="planning/49-ab-test-ideas.md" class="report-link">A/B Test Ideas</a>
+                        <div class="report-description">Proposed experiments to optimize user experience post-launch with ethical constraints</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="feedback collection plan user feedback channels surveys">
+                    <span class="report-number">50</span>
+                    <div class="report-info">
+                        <a href="planning/50-feedback-collection-plan.md" class="report-link">Feedback Collection Plan</a>
+                        <div class="report-description">How to gather user feedback through multiple channels for product improvement</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~13 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research (51-56) -->
+        <section class="category" id="research">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Research</h2>
+                    <span class="category-count">6 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="competitor feature matrix devotional apps youversion hallow dwell">
+                    <span class="report-number">51</span>
+                    <div class="report-info">
+                        <a href="research/51-competitor-feature-matrix.md" class="report-link">Competitor Feature Matrix</a>
+                        <div class="report-description">Comprehensive comparison of YouVersion, Dwell, Lectio 365, Abide, Hallow, and First 5</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~22 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="pricing research monetization strategies freemium subscription">
+                    <span class="report-number">52</span>
+                    <div class="report-info">
+                        <a href="research/52-pricing-research.md" class="report-link">Pricing Research</a>
+                        <div class="report-description">Monetization analysis recommending donation-supported freemium model for sustainability</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~18 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="app store optimization research aso keywords screenshots">
+                    <span class="report-number">53</span>
+                    <div class="report-info">
+                        <a href="research/53-app-store-optimization-research.md" class="report-link">App Store Optimization Research</a>
+                        <div class="report-description">ASO best practices for discoverability with keywords, screenshots, and description optimization</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="accessibility best practices wcag font sizing dyslexia screen reader">
+                    <span class="report-number">54</span>
+                    <div class="report-info">
+                        <a href="research/54-accessibility-best-practices.md" class="report-link">Accessibility Best Practices</a>
+                        <div class="report-description">WCAG 2.1 AA standards with font sizing, dyslexia considerations, and screen reader optimization</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~20 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="pwa vs native analysis capacitor ios push notifications">
+                    <span class="report-number">55</span>
+                    <div class="report-info">
+                        <a href="research/55-pwa-vs-native-analysis.md" class="report-link">PWA vs Native Analysis</a>
+                        <div class="report-description">PWA capabilities analysis for MVP with Capacitor wrapper recommendations for app stores</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~18 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="performance benchmarks core web vitals load times retention">
+                    <span class="report-number">56</span>
+                    <div class="report-info">
+                        <a href="research/56-performance-benchmarks.md" class="report-link">Performance Benchmarks</a>
+                        <div class="report-description">Target metrics for Core Web Vitals, user engagement, and retention rate comparisons</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design System (57-63) -->
+        <section class="category" id="design-system">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Design System</h2>
+                    <span class="category-count">7 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="color system documentation tehom scroll gold sacred minimalism">
+                    <span class="report-number">57</span>
+                    <div class="report-info">
+                        <a href="design-system/57-color-system-documentation.md" class="report-link">Color System Documentation</a>
+                        <div class="report-description">Sacred minimalism color palette with tehom, scroll, gold, and earthy, ancient-inspired tones</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="typography scale documentation fonts serif sans-serif reading">
+                    <span class="report-number">58</span>
+                    <div class="report-info">
+                        <a href="design-system/58-typography-scale-documentation.md" class="report-link">Typography Scale Documentation</a>
+                        <div class="report-description">Typography-forward system with elegant serif for reading and clean sans-serif for UI</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="spacing system documentation rhythm hierarchy tailwind">
+                    <span class="report-number">59</span>
+                    <div class="report-info">
+                        <a href="design-system/59-spacing-system-documentation.md" class="report-link">Spacing System Documentation</a>
+                        <div class="report-description">Visual rhythm and hierarchy spacing system optimized for reading layouts and sacred minimalism</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="animation guidelines gentle reduced motion accessibility">
+                    <span class="report-number">60</span>
+                    <div class="report-info">
+                        <a href="design-system/60-animation-guidelines.md" class="report-link">Animation Guidelines</a>
+                        <div class="report-description">Gentle animations that guide attention without distraction, respecting reduced motion preferences</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="icon usage guide svg components sizing accessibility">
+                    <span class="report-number">61</span>
+                    <div class="report-info">
+                        <a href="design-system/61-icon-usage-guide.md" class="report-link">Icon Usage Guide</a>
+                        <div class="report-description">Custom SVG icon system with consistent sizing, accessibility features, and color inheritance</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="dark mode specifications tehom primary contemplative reading">
+                    <span class="report-number">62</span>
+                    <div class="report-info">
+                        <a href="design-system/62-dark-mode-specifications.md" class="report-link">Dark Mode Specifications</a>
+                        <div class="report-description">Dark mode first design reflecting contemplative nature of morning and evening devotional reading</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~13 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="component api documentation props variants usage examples">
+                    <span class="report-number">63</span>
+                    <div class="report-info">
+                        <a href="design-system/63-component-api-documentation.md" class="report-link">Component API Documentation</a>
+                        <div class="report-description">Comprehensive API docs for reusable components with props, variants, and usage examples</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~24 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assets (64-69) -->
+        <section class="category" id="assets">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Assets</h2>
+                    <span class="category-count">6 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="image requirements list hero series devotional dithered duotone">
+                    <span class="report-number">64</span>
+                    <div class="report-info">
+                        <a href="assets/64-image-requirements-list.md" class="report-link">Image Requirements List</a>
+                        <div class="report-description">All images needed including hero, series covers, and devotional images in dithered/duotone style</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="icon requirements list svg custom library audit">
+                    <span class="report-number">65</span>
+                    <div class="report-info">
+                        <a href="assets/65-icon-requirements-list.md" class="report-link">Icon Requirements List</a>
+                        <div class="report-description">Audits current icon system and identifies what exists, what is missing, and recommendations</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="font audit inter playfair source serif optimization subsetting">
+                    <span class="report-number">66</span>
+                    <div class="report-info">
+                        <a href="assets/66-font-audit.md" class="report-link">Font Audit</a>
+                        <div class="report-description">Audits all fonts loaded with optimization opportunities including subsetting and weight reduction</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="favicon app icon checklist pwa sizes manifest compliance">
+                    <span class="report-number">67</span>
+                    <div class="report-info">
+                        <a href="assets/67-favicon-app-icon-checklist.md" class="report-link">Favicon & App Icon Checklist</a>
+                        <div class="report-description">All favicon and app icon sizes needed for PWA compliance with defined vs actual comparison</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~13 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="open graph image requirements social sharing twitter facebook">
+                    <span class="report-number">68</span>
+                    <div class="report-info">
+                        <a href="assets/68-open-graph-image-requirements.md" class="report-link">Open Graph Image Requirements</a>
+                        <div class="report-description">OG image specifications for social sharing across Twitter, Facebook, and LinkedIn</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="screenshot requirements app store marketing devices capture">
+                    <span class="report-number">69</span>
+                    <div class="report-info">
+                        <a href="assets/69-screenshot-requirements.md" class="report-link">Screenshot Requirements</a>
+                        <div class="report-description">Screenshots needed for app store submissions, marketing, and PWA manifest with device specs</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Database (70-73) -->
+        <section class="category" id="database">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Database</h2>
+                    <span class="category-count">4 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="seed data review completeness realism testing coverage">
+                    <span class="report-number">70</span>
+                    <div class="report-info">
+                        <a href="database/70-seed-data-review.md" class="report-link">Seed Data Review</a>
+                        <div class="report-description">Reviews existing seed data for completeness, realism, and testing coverage requirements</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="data migration plan schema changes safe procedures supabase">
+                    <span class="report-number">71</span>
+                    <div class="report-info">
+                        <a href="database/71-data-migration-plan.md" class="report-link">Data Migration Plan</a>
+                        <div class="report-description">Safe database migration procedures for schema changes including column and data type modifications</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="backup strategy documentation automatic manual recovery supabase">
+                    <span class="report-number">72</span>
+                    <div class="report-info">
+                        <a href="database/72-backup-strategy-documentation.md" class="report-link">Backup Strategy Documentation</a>
+                        <div class="report-description">Supabase backup procedures covering automatic, manual backups, and recovery processes</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~13 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="data retention policy gdpr ccpa privacy deletion user rights">
+                    <span class="report-number">73</span>
+                    <div class="report-info">
+                        <a href="database/73-data-retention-policy.md" class="report-link">Data Retention Policy</a>
+                        <div class="report-description">User data storage, retention periods, deletion procedures, and GDPR/CCPA compliance</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~15 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Marketing (74-79) -->
+        <section class="category" id="marketing">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Marketing</h2>
+                    <span class="category-count">6 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="landing page copy hero section problem cta sacred calm">
+                    <span class="report-number">74</span>
+                    <div class="report-info">
+                        <a href="marketing/74-landing-page-copy.md" class="report-link">Landing Page Copy</a>
+                        <div class="report-description">Sacred, calm, inviting copy for homepage with hero section, problem statement, and CTAs</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="feature highlight copy benefits devotionals soul audit series">
+                    <span class="report-number">75</span>
+                    <div class="report-info">
+                        <a href="marketing/75-feature-highlight-copy.md" class="report-link">Feature Highlight Copy</a>
+                        <div class="report-description">Benefits-focused copy for each major feature in short, medium, and long descriptions</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="testimonial request template early users feedback warm grateful">
+                    <span class="report-number">76</span>
+                    <div class="report-info">
+                        <a href="marketing/76-testimonial-request-template.md" class="report-link">Testimonial Request Template</a>
+                        <div class="report-description">Templates to request testimonials from early users with warm, easy-to-respond-to tone</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~11 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="press kit outline media journalists bloggers fact sheet">
+                    <span class="report-number">77</span>
+                    <div class="report-info">
+                        <a href="marketing/77-press-kit-outline.md" class="report-link">Press Kit Outline</a>
+                        <div class="report-description">Comprehensive press kit components for journalists, bloggers, podcasters, and partners</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="launch announcement draft email newsletter blog social media">
+                    <span class="report-number">78</span>
+                    <div class="report-info">
+                        <a href="marketing/78-launch-announcement-draft.md" class="report-link">Launch Announcement Draft</a>
+                        <div class="report-description">Launch announcements for email newsletter, blog, and social media with sacred, calm voice</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~13 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="referral program outline generous community-minded not salesy">
+                    <span class="report-number">79</span>
+                    <div class="report-info">
+                        <a href="marketing/79-referral-program-outline.md" class="report-link">Referral Program Outline</a>
+                        <div class="report-description">Generous, community-minded referral program that feels like sharing rather than marketing</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~12 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testing (80-83) -->
+        <section class="category" id="testing">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <div class="category-title">
+                    <h2>Testing</h2>
+                    <span class="category-count">4 reports</span>
+                </div>
+                <span class="category-toggle">&#9662;</span>
+            </div>
+            <div class="category-content">
+                <div class="report" data-keywords="unit test plan vitest utilities hooks helpers coverage">
+                    <span class="report-number">80</span>
+                    <div class="report-info">
+                        <a href="testing/80-unit-test-plan.md" class="report-link">Unit Test Plan</a>
+                        <div class="report-description">Identifies utility functions, hooks, and helpers requiring unit testing with edge cases</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~18 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="integration test plan playwright e2e user flows authentication">
+                    <span class="report-number">81</span>
+                    <div class="report-info">
+                        <a href="testing/81-integration-test-plan.md" class="report-link">Integration Test Plan</a>
+                        <div class="report-description">End-to-end integration tests for critical user flows using Playwright with detailed steps</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~20 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="visual regression test plan chromatic percy storybook themes">
+                    <span class="report-number">82</span>
+                    <div class="report-info">
+                        <a href="testing/82-visual-regression-test-plan.md" class="report-link">Visual Regression Test Plan</a>
+                        <div class="report-description">Components requiring visual testing across themes, viewports, and comparison thresholds</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~16 KB</span>
+                    </div>
+                </div>
+                <div class="report" data-keywords="device test matrix browsers ios android safari chrome pwa">
+                    <span class="report-number">83</span>
+                    <div class="report-info">
+                        <a href="testing/83-device-test-matrix.md" class="report-link">Device Test Matrix</a>
+                        <div class="report-description">Complete matrix of devices, browsers, and versions to test with priority tiers and frequency</div>
+                    </div>
+                    <div class="report-meta">
+                        <span class="report-size">~14 KB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Generated January 19, 2026 | <a href="../project-hub.html">Back to Project Hub</a></p>
+        <p style="margin-top: 10px;">EUONGELION - Ancient Wisdom Meets Modern Design</p>
+    </footer>
+
+    <script>
+        // Toggle category collapse
+        function toggleCategory(header) {
+            const category = header.parentElement;
+            category.classList.toggle('collapsed');
+        }
+
+        // Search functionality
+        const searchBox = document.getElementById('searchBox');
+        const resultsCount = document.getElementById('resultsCount');
+        const noResults = document.getElementById('noResults');
+        const categories = document.querySelectorAll('.category');
+        const reports = document.querySelectorAll('.report');
+
+        searchBox.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            if (query === '') {
+                // Show all
+                categories.forEach(cat => {
+                    cat.classList.remove('hidden', 'collapsed');
+                });
+                reports.forEach(report => {
+                    report.classList.remove('hidden');
+                });
+                resultsCount.textContent = '';
+                noResults.classList.remove('visible');
+                return;
+            }
+
+            // Search through reports
+            categories.forEach(cat => {
+                const categoryReports = cat.querySelectorAll('.report');
+                let categoryVisible = 0;
+
+                categoryReports.forEach(report => {
+                    const link = report.querySelector('.report-link').textContent.toLowerCase();
+                    const description = report.querySelector('.report-description').textContent.toLowerCase();
+                    const keywords = report.dataset.keywords || '';
+                    const categoryName = cat.querySelector('.category-title h2').textContent.toLowerCase();
+
+                    const searchText = `${link} ${description} ${keywords} ${categoryName}`;
+
+                    if (searchText.includes(query)) {
+                        report.classList.remove('hidden');
+                        categoryVisible++;
+                        visibleCount++;
+                    } else {
+                        report.classList.add('hidden');
+                    }
+                });
+
+                // Show/hide category based on visible reports
+                if (categoryVisible > 0) {
+                    cat.classList.remove('hidden', 'collapsed');
+                } else {
+                    cat.classList.add('hidden');
+                }
+            });
+
+            // Update results count
+            if (visibleCount > 0) {
+                resultsCount.textContent = `Showing ${visibleCount} report${visibleCount !== 1 ? 's' : ''}`;
+                noResults.classList.remove('visible');
+            } else {
+                resultsCount.textContent = '';
+                noResults.classList.add('visible');
+            }
+        });
+
+        // Smooth scroll for quick jump links
+        document.querySelectorAll('.quick-jump a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Ensure category is expanded
+                    target.classList.remove('collapsed');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EUONGELION Decision Wizard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --tehom: #1A1612;
+      --scroll: #F7F3ED;
+      --gold: #C19A6B;
+      --gold-dark: #8B6914;
+      --secondary: rgba(26, 22, 18, 0.6);
+      --border: rgba(26, 22, 18, 0.1);
+      --font-body: 'DM Sans', sans-serif;
+      --font-display: 'Playfair Display', serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 18px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--scroll);
+      color: var(--tehom);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 1.5rem 0 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .header-logo {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .header-title {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 400;
+    }
+
+    /* Progress */
+    .progress-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-text {
+      font-size: 0.75rem;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
+
+    /* Question Card */
+    .question-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.75rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 1rem;
+    }
+
+    .question-category {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .question-number {
+      font-size: 0.65rem;
+      color: var(--secondary);
+      float: right;
+    }
+
+    .question-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .question-description {
+      color: var(--secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Options */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .option {
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      padding: 0.9rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .option:hover {
+      border-color: var(--gold);
+      background: rgba(193, 154, 107, 0.05);
+    }
+
+    .option.selected {
+      border-color: var(--gold);
+      background: rgba(193, 154, 107, 0.1);
+    }
+
+    .option-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .option-radio {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .option.selected .option-radio {
+      border-color: var(--gold);
+      background: var(--gold);
+    }
+
+    .option.selected .option-radio::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .option-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .option-desc {
+      margin-top: 0.4rem;
+      margin-left: 1.6rem;
+      font-size: 0.8rem;
+      color: var(--secondary);
+      line-height: 1.5;
+    }
+
+    .recommended {
+      position: absolute;
+      top: -6px;
+      right: 10px;
+      background: var(--gold);
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+    }
+
+    /* Feedback Section */
+    .feedback-section {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .feedback-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--secondary);
+    }
+
+    .feedback-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 70px;
+      transition: border-color 0.2s ease;
+    }
+
+    .feedback-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .feedback-input::placeholder {
+      color: #aaa;
+    }
+
+    /* Text Input (for text-only questions) */
+    .text-input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      resize: vertical;
+      min-height: 100px;
+      transition: border-color 0.2s ease;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.7rem 1.25rem;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--secondary);
+    }
+
+    .btn-secondary:hover {
+      color: var(--tehom);
+    }
+
+    .btn-primary {
+      background: var(--tehom);
+      color: var(--scroll);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Summary */
+    .summary-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-category {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin: 1.5rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .summary-category:first-child {
+      margin-top: 0;
+    }
+
+    .summary-item {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-question {
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .summary-answer {
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .summary-feedback {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--secondary);
+      font-style: italic;
+    }
+
+    /* Copy Section */
+    .copy-section {
+      background: var(--tehom);
+      color: var(--scroll);
+      padding: 1.25rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .copy-section p {
+      margin-bottom: 0.75rem;
+      opacity: 0.8;
+      font-size: 0.9rem;
+    }
+
+    .btn-copy {
+      background: var(--gold);
+      color: var(--tehom);
+      padding: 0.75rem 1.5rem;
+    }
+
+    .hidden { display: none; }
+
+    /* Category Selector */
+    .category-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .category-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: white;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .category-btn:hover {
+      border-color: var(--gold);
+    }
+
+    .category-btn.active {
+      background: var(--tehom);
+      color: var(--scroll);
+      border-color: var(--tehom);
+    }
+
+    .category-btn .count {
+      font-size: 0.7rem;
+      opacity: 0.7;
+      margin-left: 0.25rem;
+    }
+
+    @media (max-width: 600px) {
+      html { font-size: 16px; }
+      .container { padding: 1rem; }
+      .question-card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <p class="header-logo">EUONGELION</p>
+      <h1 class="header-title">Decision Wizard</h1>
+    </header>
+
+    <!-- Category Selector -->
+    <div class="category-selector" id="category-selector">
+      <!-- Populated by JS -->
+    </div>
+
+    <div id="wizard">
+      <div class="progress-container">
+        <div class="progress-text">
+          <span id="progress-label">Question 1 of 20</span>
+          <span id="progress-category">Pricing</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width: 5%"></div>
+        </div>
+      </div>
+
+      <div class="question-card" id="question-card"></div>
+
+      <div class="nav">
+        <button class="btn btn-secondary" id="btn-back">Back</button>
+        <button class="btn btn-primary" id="btn-next">Continue</button>
+      </div>
+    </div>
+
+    <div id="summary" class="hidden">
+      <div class="question-card">
+        <h2 class="question-title">Your Decisions</h2>
+        <p class="question-description">Copy this to paste back to Claude.</p>
+        <div id="summary-content"></div>
+      </div>
+
+      <div class="copy-section">
+        <p>Copy your decisions to paste back into the conversation</p>
+        <button class="btn btn-copy" id="btn-copy">Copy to Clipboard</button>
+      </div>
+
+      <div class="nav" style="margin-top: 1rem;">
+        <button class="btn btn-secondary" id="btn-restart">Start Over</button>
+        <button class="btn btn-primary" id="btn-edit">Edit Answers</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // All decision questions organized by category
+    const questions = [
+      // ===== PRICING (4) =====
+      {
+        id: 'pricing-model',
+        category: 'Pricing',
+        title: 'How should EUONGELION be priced?',
+        description: 'This determines how you\'ll sustain the platform while serving your mission.',
+        type: 'single',
+        options: [
+          { value: 'free', label: 'Completely Free', description: 'All content free forever. Funded externally.' },
+          { value: 'freemium', label: 'Freemium', description: 'Core free, premium features ($4.99/mo) for audio, offline, PDFs.' },
+          { value: 'donations', label: 'Free + Donations', description: 'All free with "support this ministry" prompts.', recommended: true },
+          { value: 'subscription', label: 'Subscription', description: '14-day trial, then $5.99/mo required.' }
+        ]
+      },
+      {
+        id: 'pricing-priority',
+        category: 'Pricing',
+        title: 'What\'s your main priority?',
+        type: 'single',
+        options: [
+          { value: 'mission', label: 'Maximum Reach', description: 'I\'d rather reach more people than generate revenue.' },
+          { value: 'sustainability', label: 'Self-Sustaining', description: 'I need this to fund itself long-term.' },
+          { value: 'hybrid', label: 'Both', description: 'Start free, add revenue later if needed.' }
+        ]
+      },
+      {
+        id: 'donation-timing',
+        category: 'Pricing',
+        title: 'When should donation prompts appear?',
+        description: 'If using donations model.',
+        type: 'single',
+        options: [
+          { value: 'end-of-series', label: 'End of each series', description: 'After completing a 7-day series.', recommended: true },
+          { value: 'monthly', label: 'Monthly', description: 'Once per month for active users.' },
+          { value: 'settings-only', label: 'Settings only', description: 'Never interrupt; only in settings.' },
+          { value: 'na', label: 'Not applicable', description: 'Using subscription or fully free model.' }
+        ]
+      },
+      {
+        id: 'external-funding',
+        category: 'Pricing',
+        title: 'Do you have external funding for Year 1?',
+        description: 'Can wokeGod or other sources cover ~$10-25K operating costs?',
+        type: 'single',
+        options: [
+          { value: 'yes', label: 'Yes', description: 'I can cover Year 1 costs externally.' },
+          { value: 'partial', label: 'Partially', description: 'Some funding, but need additional revenue.' },
+          { value: 'no', label: 'No', description: 'Platform needs to self-fund.' }
+        ]
+      },
+
+      // ===== LAUNCH STRATEGY (5) =====
+      {
+        id: 'launch-date',
+        category: 'Launch',
+        title: 'Target launch timing?',
+        type: 'single',
+        options: [
+          { value: 'asap', label: 'ASAP', description: 'Launch as soon as MVP is ready.' },
+          { value: 'date', label: 'Specific date', description: 'Aiming for a particular date (add in notes).' },
+          { value: 'easter', label: 'Easter 2026', description: 'Align with resurrection Sunday.' },
+          { value: 'flexible', label: 'Flexible', description: 'When it\'s ready, it\'s ready.' }
+        ]
+      },
+      {
+        id: 'launch-content',
+        category: 'Launch',
+        title: 'Minimum content for launch?',
+        description: 'How many series need to be complete before launching?',
+        type: 'single',
+        options: [
+          { value: 'minimal', label: '3-5 series', description: 'Onboarding + 2-4 core series. Ship fast.' },
+          { value: 'moderate', label: '10-15 series', description: 'Cover all major Soul Audit categories.' },
+          { value: 'comprehensive', label: '20+ series', description: 'Robust library before launch.' }
+        ]
+      },
+      {
+        id: 'launch-audience',
+        category: 'Launch',
+        title: 'Initial launch audience?',
+        type: 'single',
+        options: [
+          { value: 'private', label: 'Private beta', description: 'Invite-only, 50-100 users for feedback.' },
+          { value: 'soft', label: 'Soft launch', description: 'Public but no marketing push.' },
+          { value: 'public', label: 'Public launch', description: 'Full marketing from day one.' }
+        ]
+      },
+      {
+        id: 'beta-testers',
+        category: 'Launch',
+        title: 'Do you have beta testers lined up?',
+        type: 'single',
+        options: [
+          { value: 'yes', label: 'Yes', description: 'I have people ready to test.' },
+          { value: 'some', label: 'A few', description: 'Some, but need more.' },
+          { value: 'no', label: 'No', description: 'Need to recruit testers.' }
+        ]
+      },
+      {
+        id: 'launch-marketing',
+        category: 'Launch',
+        title: 'Primary marketing channel at launch?',
+        type: 'single',
+        options: [
+          { value: 'word-of-mouth', label: 'Word of mouth', description: 'Organic sharing, personal networks.' },
+          { value: 'social', label: 'Social media', description: 'Instagram, Twitter, TikTok content.' },
+          { value: 'church', label: 'Church partnerships', description: 'Get churches to promote.' },
+          { value: 'content', label: 'Content/SEO', description: 'Blog posts, searchable content.' }
+        ]
+      },
+
+      // ===== CONTENT PRODUCTION (4) =====
+      {
+        id: 'content-voice',
+        category: 'Content',
+        title: 'Who writes the devotional content?',
+        type: 'single',
+        options: [
+          { value: 'founder', label: 'You (founder)', description: 'All content written/edited by you.' },
+          { value: 'ai-assisted', label: 'AI-assisted', description: 'Claude drafts, you edit and approve.' },
+          { value: 'team', label: 'Writing team', description: 'Multiple contributors with your oversight.' }
+        ]
+      },
+      {
+        id: 'content-pace',
+        category: 'Content',
+        title: 'Content production pace?',
+        description: 'How fast can you produce/review content?',
+        type: 'single',
+        options: [
+          { value: 'fast', label: '5-10 devotionals/week', description: 'Aggressive pace, AI-heavy.' },
+          { value: 'moderate', label: '2-5 devotionals/week', description: 'Balanced pace.' },
+          { value: 'slow', label: '1-2 devotionals/week', description: 'Careful, thorough review.' }
+        ]
+      },
+      {
+        id: 'content-365',
+        category: 'Content',
+        title: 'When to create the 365-day Through-the-Bible?',
+        type: 'single',
+        options: [
+          { value: 'later', label: 'After launch', description: 'Focus on shorter series first, add 365-day later.' },
+          { value: 'parallel', label: 'In parallel', description: 'Work on it alongside other series.' },
+          { value: 'first', label: 'Priority', description: 'Make it the flagship, launch with it.' }
+        ]
+      },
+      {
+        id: 'content-review',
+        category: 'Content',
+        title: 'Content review process?',
+        type: 'single',
+        options: [
+          { value: 'founder-only', label: 'You review all', description: 'Every piece goes through you.' },
+          { value: 'spot-check', label: 'Spot check', description: 'Review samples, trust the process.' },
+          { value: 'theological', label: 'Theological review', description: 'Have a pastor/theologian review.' }
+        ]
+      },
+
+      // ===== TECHNICAL (4) =====
+      {
+        id: 'tech-timeline',
+        category: 'Technical',
+        title: 'Development timeline expectation?',
+        type: 'single',
+        options: [
+          { value: '4-weeks', label: '4 weeks', description: 'Original MVP scope.' },
+          { value: '6-weeks', label: '6 weeks', description: 'Slightly more polish.' },
+          { value: '8-weeks', label: '8+ weeks', description: 'More features before launch.' }
+        ]
+      },
+      {
+        id: 'tech-who',
+        category: 'Technical',
+        title: 'Who\'s building it?',
+        type: 'single',
+        options: [
+          { value: 'you-claude', label: 'You + Claude', description: 'You coding with AI assistance.' },
+          { value: 'contractor', label: 'Contractor/Agency', description: 'Hiring someone to build.' },
+          { value: 'cofounder', label: 'Technical co-founder', description: 'Partner handling tech.' }
+        ]
+      },
+      {
+        id: 'tech-hosting',
+        category: 'Technical',
+        title: 'Hosting preference?',
+        type: 'single',
+        options: [
+          { value: 'vercel', label: 'Vercel', description: 'Easy Next.js deployment, generous free tier.', recommended: true },
+          { value: 'netlify', label: 'Netlify', description: 'Similar to Vercel, good free tier.' },
+          { value: 'self', label: 'Self-hosted', description: 'Your own server (more control, more work).' },
+          { value: 'unsure', label: 'Not sure', description: 'Need recommendation.' }
+        ]
+      },
+      {
+        id: 'tech-auth',
+        category: 'Technical',
+        title: 'User authentication method?',
+        type: 'single',
+        options: [
+          { value: 'email', label: 'Email/password', description: 'Traditional signup.' },
+          { value: 'magic', label: 'Magic link', description: 'Passwordless email login.' },
+          { value: 'social', label: 'Social login', description: 'Google/Apple sign-in.' },
+          { value: 'all', label: 'All options', description: 'Email + magic link + social.' }
+        ]
+      },
+
+      // ===== DESIGN (3) =====
+      {
+        id: 'design-dark',
+        category: 'Design',
+        title: 'Dark mode priority?',
+        type: 'single',
+        options: [
+          { value: 'launch', label: 'At launch', description: 'Include dark mode in MVP.' },
+          { value: 'soon', label: 'Soon after', description: 'Phase 2 feature.' },
+          { value: 'later', label: 'Later', description: 'Not a priority right now.' }
+        ]
+      },
+      {
+        id: 'design-images',
+        category: 'Design',
+        title: 'Images in devotionals?',
+        type: 'single',
+        options: [
+          { value: 'none', label: 'Text only', description: 'Clean, no images needed.' },
+          { value: 'minimal', label: 'Minimal', description: 'Occasional images where helpful.' },
+          { value: 'rich', label: 'Rich media', description: 'Images, illustrations throughout.' }
+        ]
+      },
+      {
+        id: 'design-branding',
+        category: 'Design',
+        title: 'Branding relationship to wokeGod?',
+        type: 'single',
+        options: [
+          { value: 'standalone', label: 'Standalone', description: 'EUONGELION has its own identity.' },
+          { value: 'connected', label: 'Connected', description: '"EUONGELION by wokeGod" or similar.' },
+          { value: 'integrated', label: 'Fully integrated', description: 'Lives within wokeGod brand.' }
+        ]
+      }
+    ];
+
+    // Group questions by category
+    const categories = [...new Set(questions.map(q => q.category))];
+
+    // State
+    let currentQuestion = 0;
+    let answers = {};
+    let feedback = {};
+    let activeCategory = null; // null = all
+
+    // DOM elements
+    const wizard = document.getElementById('wizard');
+    const summary = document.getElementById('summary');
+    const questionCard = document.getElementById('question-card');
+    const progressLabel = document.getElementById('progress-label');
+    const progressCategory = document.getElementById('progress-category');
+    const progressFill = document.getElementById('progress-fill');
+    const btnBack = document.getElementById('btn-back');
+    const btnNext = document.getElementById('btn-next');
+    const btnCopy = document.getElementById('btn-copy');
+    const btnRestart = document.getElementById('btn-restart');
+    const btnEdit = document.getElementById('btn-edit');
+    const summaryContent = document.getElementById('summary-content');
+    const categorySelector = document.getElementById('category-selector');
+
+    // Get filtered questions
+    function getFilteredQuestions() {
+      if (!activeCategory) return questions;
+      return questions.filter(q => q.category === activeCategory);
+    }
+
+    // Render category selector
+    function renderCategorySelector() {
+      let html = `<button class="category-btn ${!activeCategory ? 'active' : ''}" data-category="">All <span class="count">(${questions.length})</span></button>`;
+
+      categories.forEach(cat => {
+        const count = questions.filter(q => q.category === cat).length;
+        html += `<button class="category-btn ${activeCategory === cat ? 'active' : ''}" data-category="${cat}">${cat} <span class="count">(${count})</span></button>`;
+      });
+
+      categorySelector.innerHTML = html;
+
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeCategory = btn.dataset.category || null;
+          currentQuestion = 0;
+          renderCategorySelector();
+          renderQuestion();
+        });
+      });
+    }
+
+    // Render question
+    function renderQuestion() {
+      const filtered = getFilteredQuestions();
+      const q = filtered[currentQuestion];
+
+      if (!q) {
+        showSummary();
+        return;
+      }
+
+      // Update progress
+      progressLabel.textContent = `Question ${currentQuestion + 1} of ${filtered.length}`;
+      progressCategory.textContent = q.category;
+      progressFill.style.width = `${((currentQuestion + 1) / filtered.length) * 100}%`;
+
+      // Update buttons
+      btnBack.style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
+      btnNext.textContent = currentQuestion === filtered.length - 1 ? 'See Summary' : 'Continue';
+
+      // Build question HTML
+      let html = `
+        <span class="question-number">${currentQuestion + 1}/${filtered.length}</span>
+        <p class="question-category">${q.category}</p>
+        <h2 class="question-title">${q.title}</h2>
+        ${q.description ? `<p class="question-description">${q.description}</p>` : ''}
+      `;
+
+      if (q.type === 'single' || q.type === 'multi') {
+        html += '<div class="options">';
+        q.options.forEach(opt => {
+          const isSelected = q.type === 'multi'
+            ? (answers[q.id] || []).includes(opt.value)
+            : answers[q.id] === opt.value;
+
+          html += `
+            <div class="option ${isSelected ? 'selected' : ''}" data-value="${opt.value}">
+              ${opt.recommended ? '<span class="recommended">Recommended</span>' : ''}
+              <div class="option-header">
+                <div class="option-radio"></div>
+                <span class="option-label">${opt.label}</span>
+              </div>
+              ${opt.description ? `<p class="option-desc">${opt.description}</p>` : ''}
+            </div>
+          `;
+        });
+        html += '</div>';
+      } else if (q.type === 'text') {
+        html += `<textarea class="text-input" id="text-answer" placeholder="${q.placeholder || ''}">${answers[q.id] || ''}</textarea>`;
+      }
+
+      // Add feedback section
+      html += `
+        <div class="feedback-section">
+          <label class="feedback-label">Additional thoughts? (optional)</label>
+          <textarea class="feedback-input" id="feedback-input" placeholder="Any nuance, context, or questions...">${feedback[q.id] || ''}</textarea>
+        </div>
+      `;
+
+      questionCard.innerHTML = html;
+
+      // Add event listeners
+      if (q.type === 'single') {
+        document.querySelectorAll('.option').forEach(opt => {
+          opt.addEventListener('click', () => selectOption(q.id, opt.dataset.value, 'single'));
+        });
+      } else if (q.type === 'multi') {
+        document.querySelectorAll('.option').forEach(opt => {
+          opt.addEventListener('click', () => selectOption(q.id, opt.dataset.value, 'multi'));
+        });
+      } else if (q.type === 'text') {
+        document.getElementById('text-answer').addEventListener('input', (e) => {
+          answers[q.id] = e.target.value;
+          updateNextButton();
+        });
+      }
+
+      // Feedback listener
+      document.getElementById('feedback-input').addEventListener('input', (e) => {
+        feedback[q.id] = e.target.value;
+      });
+
+      updateNextButton();
+    }
+
+    function selectOption(questionId, value, type) {
+      if (type === 'single') {
+        answers[questionId] = value;
+        document.querySelectorAll('.option').forEach(opt => {
+          opt.classList.toggle('selected', opt.dataset.value === value);
+        });
+      } else if (type === 'multi') {
+        if (!answers[questionId]) answers[questionId] = [];
+        const idx = answers[questionId].indexOf(value);
+        if (idx > -1) {
+          answers[questionId].splice(idx, 1);
+        } else {
+          answers[questionId].push(value);
+        }
+        document.querySelectorAll('.option').forEach(opt => {
+          opt.classList.toggle('selected', answers[questionId].includes(opt.dataset.value));
+        });
+      }
+      updateNextButton();
+    }
+
+    function updateNextButton() {
+      const filtered = getFilteredQuestions();
+      const q = filtered[currentQuestion];
+      if (!q) return;
+
+      let canProceed = true;
+      if (q.type === 'single') {
+        canProceed = !!answers[q.id];
+      } else if (q.type === 'multi') {
+        canProceed = (answers[q.id] || []).length > 0;
+      }
+
+      btnNext.disabled = !canProceed;
+    }
+
+    function showSummary() {
+      wizard.classList.add('hidden');
+      summary.classList.remove('hidden');
+      categorySelector.classList.add('hidden');
+
+      let html = '';
+      let currentCat = '';
+
+      questions.forEach(q => {
+        if (q.category !== currentCat) {
+          currentCat = q.category;
+          html += `<h3 class="summary-category">${currentCat}</h3>`;
+        }
+
+        const answer = answers[q.id];
+        let displayAnswer = '';
+
+        if (q.type === 'single') {
+          const opt = q.options?.find(o => o.value === answer);
+          displayAnswer = opt ? opt.label : '<em>Not answered</em>';
+        } else if (q.type === 'multi') {
+          displayAnswer = (answer || []).map(v => q.options.find(o => o.value === v)?.label || v).join(', ') || '<em>None</em>';
+        } else {
+          displayAnswer = answer || '<em>Not answered</em>';
+        }
+
+        html += `
+          <div class="summary-item">
+            <div class="summary-question">${q.title}</div>
+            <div class="summary-answer">${displayAnswer}</div>
+            ${feedback[q.id] ? `<div class="summary-feedback">"${feedback[q.id]}"</div>` : ''}
+          </div>
+        `;
+      });
+
+      summaryContent.innerHTML = html;
+    }
+
+    function generateCopyText() {
+      let text = '## EUONGELION DECISIONS\n\n';
+      let currentCat = '';
+
+      questions.forEach(q => {
+        if (q.category !== currentCat) {
+          currentCat = q.category;
+          text += `### ${currentCat}\n\n`;
+        }
+
+        const answer = answers[q.id];
+        let displayAnswer = '';
+
+        if (q.type === 'single') {
+          const opt = q.options?.find(o => o.value === answer);
+          displayAnswer = opt ? opt.label : 'Not answered';
+        } else if (q.type === 'multi') {
+          displayAnswer = (answer || []).map(v => q.options.find(o => o.value === v)?.label || v).join(', ') || 'None';
+        } else {
+          displayAnswer = answer || 'Not answered';
+        }
+
+        text += `**${q.title}**\n${displayAnswer}`;
+        if (feedback[q.id]) {
+          text += `\n_Notes: "${feedback[q.id]}"_`;
+        }
+        text += '\n\n';
+      });
+
+      return text;
+    }
+
+    // Event listeners
+    btnNext.addEventListener('click', () => {
+      const filtered = getFilteredQuestions();
+      if (currentQuestion < filtered.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+      } else {
+        showSummary();
+      }
+    });
+
+    btnBack.addEventListener('click', () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    });
+
+    btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(generateCopyText()).then(() => {
+        btnCopy.textContent = 'Copied!';
+        setTimeout(() => btnCopy.textContent = 'Copy to Clipboard', 2000);
+      });
+    });
+
+    btnRestart.addEventListener('click', () => {
+      currentQuestion = 0;
+      answers = {};
+      feedback = {};
+      activeCategory = null;
+      summary.classList.add('hidden');
+      wizard.classList.remove('hidden');
+      categorySelector.classList.remove('hidden');
+      renderCategorySelector();
+      renderQuestion();
+    });
+
+    btnEdit.addEventListener('click', () => {
+      currentQuestion = 0;
+      summary.classList.add('hidden');
+      wizard.classList.remove('hidden');
+      categorySelector.classList.remove('hidden');
+      renderCategorySelector();
+      renderQuestion();
+    });
+
+    // Initialize
+    renderCategorySelector();
+    renderQuestion();
+  </script>
+</body>
+</html>

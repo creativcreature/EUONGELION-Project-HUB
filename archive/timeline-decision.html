@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EUONGELION - Timeline Decision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --tehom: #1A1612;
+      --scroll: #F7F3ED;
+      --gold: #C19A6B;
+      --gold-dark: #8B6914;
+      --secondary: rgba(26, 22, 18, 0.6);
+      --border: rgba(26, 22, 18, 0.1);
+      --red: #c0392b;
+      --green: #27ae60;
+      --font-body: 'DM Sans', sans-serif;
+      --font-display: 'Playfair Display', serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 18px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--scroll);
+      color: var(--tehom);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .header {
+      text-align: center;
+      padding: 1.5rem 0 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .header-logo {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 0.25rem;
+    }
+    .header-title {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 400;
+    }
+    .alert {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .alert-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .alert p {
+      font-size: 0.9rem;
+      color: var(--secondary);
+    }
+    .math-box {
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .math-title {
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gold-dark);
+      margin-bottom: 0.75rem;
+    }
+    .math-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .math-row:last-child { border-bottom: none; }
+    .math-row.total {
+      font-weight: 700;
+      padding-top: 0.75rem;
+      margin-top: 0.5rem;
+      border-top: 2px solid var(--tehom);
+      border-bottom: none;
+    }
+    .math-row.problem {
+      color: var(--red);
+      font-weight: 600;
+    }
+    .question-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.75rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 1rem;
+    }
+    .question-category {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 0.5rem;
+    }
+    .question-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+    .question-description {
+      color: var(--secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .option {
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .option:hover {
+      border-color: var(--gold);
+      background: rgba(193, 154, 107, 0.05);
+    }
+    .option.selected {
+      border-color: var(--gold);
+      background: rgba(193, 154, 107, 0.1);
+    }
+    .option-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+    .option-radio {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      margin-top: 2px;
+    }
+    .option.selected .option-radio {
+      border-color: var(--gold);
+      background: var(--gold);
+    }
+    .option.selected .option-radio::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+    }
+    .option-content { flex: 1; }
+    .option-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+    .option-desc {
+      font-size: 0.8rem;
+      color: var(--secondary);
+      line-height: 1.5;
+    }
+    .option-math {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      padding: 0.5rem;
+      background: rgba(0,0,0,0.03);
+      border-radius: 4px;
+    }
+    .option-math span {
+      display: block;
+    }
+    .recommended {
+      position: absolute;
+      top: -6px;
+      right: 10px;
+      background: var(--gold);
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+    }
+    .feedback-section {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .feedback-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--secondary);
+    }
+    .feedback-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 80px;
+    }
+    .feedback-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.5rem;
+    }
+    .btn {
+      padding: 0.7rem 1.25rem;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--secondary);
+    }
+    .btn-primary {
+      background: var(--tehom);
+      color: var(--scroll);
+    }
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .copy-section {
+      background: var(--tehom);
+      color: var(--scroll);
+      padding: 1.25rem;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .copy-section p {
+      margin-bottom: 0.75rem;
+      opacity: 0.8;
+      font-size: 0.9rem;
+    }
+    .btn-copy {
+      background: var(--gold);
+      color: var(--tehom);
+      padding: 0.75rem 1.5rem;
+    }
+    .hidden { display: none; }
+    .summary-item {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-question {
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+    .summary-answer {
+      color: var(--gold-dark);
+      font-weight: 600;
+    }
+    .summary-feedback {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--secondary);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <p class="header-logo">EUONGELION</p>
+      <h1 class="header-title">Timeline Decision</h1>
+    </header>
+
+    <div class="alert">
+      <p class="alert-title">Timeline Conflict Detected</p>
+      <p>Your choices create a math problem. Let's resolve it.</p>
+    </div>
+
+    <div class="math-box">
+      <p class="math-title">Current Plan</p>
+      <div class="math-row">
+        <span>Target Launch</span>
+        <span>Easter 2026 (~12 weeks)</span>
+      </div>
+      <div class="math-row">
+        <span>20+ series × 7 days</span>
+        <span>140+ devotionals</span>
+      </div>
+      <div class="math-row">
+        <span>365-day series (priority)</span>
+        <span>365 devotionals</span>
+      </div>
+      <div class="math-row total">
+        <span>Total needed</span>
+        <span>505+ devotionals</span>
+      </div>
+      <div class="math-row">
+        <span>Your review pace</span>
+        <span>5-10/week</span>
+      </div>
+      <div class="math-row problem">
+        <span>Time to complete at 10/week</span>
+        <span>50+ weeks</span>
+      </div>
+    </div>
+
+    <div id="wizard">
+      <div class="question-card" id="question-card"></div>
+      <div class="nav">
+        <button class="btn btn-secondary hidden" id="btn-back">Back</button>
+        <button class="btn btn-primary" id="btn-next" disabled>Continue</button>
+      </div>
+    </div>
+
+    <div id="summary" class="hidden">
+      <div class="question-card">
+        <h2 class="question-title">Your Decision</h2>
+        <div id="summary-content"></div>
+      </div>
+      <div class="copy-section">
+        <p>Copy to paste back to Claude</p>
+        <button class="btn btn-copy" id="btn-copy">Copy to Clipboard</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        id: 'timeline-approach',
+        category: 'Timeline Resolution',
+        title: 'How do you want to resolve this?',
+        description: 'Pick the approach that fits your priorities.',
+        type: 'single',
+        options: [
+          {
+            value: 'delay-launch',
+            label: 'Delay launch to Fall 2026',
+            description: 'Keep quality bar high, launch with full content library.',
+            math: '~9 months = 36 weeks at 10/week = 360 devotionals reviewed'
+          },
+          {
+            value: 'reduce-scope',
+            label: 'Launch with less content',
+            description: 'Start with 10 series + first 90 days of 365. Add more post-launch.',
+            math: '10 series (70) + 90 days = 160 devotionals. At 10/week = 16 weeks. Doable.',
+            recommended: true
+          },
+          {
+            value: 'aggressive-ai',
+            label: 'Aggressive AI generation',
+            description: 'Claude generates in bulk. You review batches (50-100/week review pace).',
+            math: '500 devotionals ÷ 12 weeks = 42/week generation, ~40/week review. Intense but possible.'
+          },
+          {
+            value: 'phased-365',
+            label: 'Phase the 365-day series',
+            description: 'Launch 365-day with Q1 only (90 days). Release quarterly.',
+            math: '20 series (140) + 90 days = 230 devotionals. At 10/week = 23 weeks. Close but tight.'
+          },
+          {
+            value: 'other',
+            label: 'Other approach',
+            description: 'I have a different idea (explain in notes).',
+            math: ''
+          }
+        ]
+      },
+      {
+        id: 'launch-priority',
+        category: 'Launch Priority',
+        title: 'What matters most for launch?',
+        description: 'If you had to pick ONE thing to nail at launch.',
+        type: 'single',
+        options: [
+          {
+            value: 'date',
+            label: 'The date (Easter)',
+            description: 'Easter 2026 is non-negotiable. Adjust scope to fit.'
+          },
+          {
+            value: 'content-depth',
+            label: 'Content depth',
+            description: 'Quality and completeness matter more than timing.'
+          },
+          {
+            value: '365-series',
+            label: 'The 365-day series',
+            description: 'This is the flagship. It needs to be complete or substantial.'
+          },
+          {
+            value: 'variety',
+            label: 'Series variety',
+            description: 'Need enough series to cover all Soul Audit categories.'
+          }
+        ]
+      },
+      {
+        id: 'ai-comfort',
+        category: 'AI Generation',
+        title: 'How comfortable are you with AI-heavy content?',
+        description: 'This affects how fast we can realistically move.',
+        type: 'single',
+        options: [
+          {
+            value: 'very',
+            label: 'Very comfortable',
+            description: 'Claude drafts, I do light editing. Trust the process.'
+          },
+          {
+            value: 'moderate',
+            label: 'Moderately comfortable',
+            description: 'Claude drafts, I review carefully and edit significantly.'
+          },
+          {
+            value: 'cautious',
+            label: 'Cautious',
+            description: 'I need to heavily review/rewrite. AI is a starting point only.'
+          }
+        ]
+      }
+    ];
+
+    let currentQuestion = 0;
+    let answers = {};
+    let feedback = {};
+
+    const wizard = document.getElementById('wizard');
+    const summary = document.getElementById('summary');
+    const questionCard = document.getElementById('question-card');
+    const btnBack = document.getElementById('btn-back');
+    const btnNext = document.getElementById('btn-next');
+    const btnCopy = document.getElementById('btn-copy');
+    const summaryContent = document.getElementById('summary-content');
+
+    function renderQuestion() {
+      const q = questions[currentQuestion];
+
+      btnBack.classList.toggle('hidden', currentQuestion === 0);
+      btnNext.textContent = currentQuestion === questions.length - 1 ? 'See Summary' : 'Continue';
+
+      let html = `
+        <p class="question-category">${q.category}</p>
+        <h2 class="question-title">${q.title}</h2>
+        ${q.description ? `<p class="question-description">${q.description}</p>` : ''}
+        <div class="options">
+      `;
+
+      q.options.forEach(opt => {
+        const isSelected = answers[q.id] === opt.value;
+        html += `
+          <div class="option ${isSelected ? 'selected' : ''}" data-value="${opt.value}">
+            ${opt.recommended ? '<span class="recommended">Recommended</span>' : ''}
+            <div class="option-header">
+              <div class="option-radio"></div>
+              <div class="option-content">
+                <div class="option-label">${opt.label}</div>
+                <div class="option-desc">${opt.description}</div>
+                ${opt.math ? `<div class="option-math"><span>${opt.math}</span></div>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>
+        <div class="feedback-section">
+          <label class="feedback-label">Additional thoughts? (optional)</label>
+          <textarea class="feedback-input" id="feedback-input" placeholder="Any nuance or context...">${feedback[q.id] || ''}</textarea>
+        </div>
+      `;
+
+      questionCard.innerHTML = html;
+
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          answers[q.id] = opt.dataset.value;
+          document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          btnNext.disabled = false;
+        });
+      });
+
+      document.getElementById('feedback-input').addEventListener('input', (e) => {
+        feedback[q.id] = e.target.value;
+      });
+
+      btnNext.disabled = !answers[q.id];
+    }
+
+    function showSummary() {
+      wizard.classList.add('hidden');
+      summary.classList.remove('hidden');
+
+      let html = '';
+      questions.forEach(q => {
+        const opt = q.options.find(o => o.value === answers[q.id]);
+        html += `
+          <div class="summary-item">
+            <div class="summary-question">${q.title}</div>
+            <div class="summary-answer">${opt ? opt.label : 'Not answered'}</div>
+            ${feedback[q.id] ? `<div class="summary-feedback">"${feedback[q.id]}"</div>` : ''}
+          </div>
+        `;
+      });
+      summaryContent.innerHTML = html;
+    }
+
+    function generateCopyText() {
+      let text = '## TIMELINE DECISION\n\n';
+      questions.forEach(q => {
+        const opt = q.options.find(o => o.value === answers[q.id]);
+        text += `**${q.title}**\n${opt ? opt.label : 'Not answered'}`;
+        if (feedback[q.id]) text += `\n_Notes: "${feedback[q.id]}"_`;
+        text += '\n\n';
+      });
+      return text;
+    }
+
+    btnNext.addEventListener('click', () => {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+      } else {
+        showSummary();
+      }
+    });
+
+    btnBack.addEventListener('click', () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    });
+
+    btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(generateCopyText()).then(() => {
+        btnCopy.textContent = 'Copied!';
+        setTimeout(() => btnCopy.textContent = 'Copy to Clipboard', 2000);
+      });
+    });
+
+    renderQuestion();
+  </script>
+</body>
+</html>

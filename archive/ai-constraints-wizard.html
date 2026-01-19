@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EUONGELION - AI Content Constraints Decisions</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tehom: #1A1612;
+            --scroll: #F7F3ED;
+            --scroll-dark: #E8E4DE;
+            --gold: #C19A6B;
+            --gold-dark: #8B6914;
+            --text-primary: #1A1612;
+            --text-secondary: #5C5347;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            background-color: var(--scroll);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--tehom);
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .intro-text {
+            background: var(--tehom);
+            color: var(--scroll);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .intro-text strong {
+            color: var(--gold);
+        }
+
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .category-tab {
+            padding: 10px 20px;
+            background: var(--scroll-dark);
+            border: 2px solid transparent;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-tab:hover {
+            border-color: var(--gold);
+        }
+
+        .category-tab.active {
+            background: var(--gold);
+            color: white;
+        }
+
+        .category-tab .count {
+            background: var(--tehom);
+            color: var(--scroll);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+
+        .category-tab.active .count {
+            background: white;
+            color: var(--tehom);
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(26, 22, 18, 0.08);
+            border-left: 4px solid var(--gold);
+        }
+
+        .question-card.answered {
+            border-left-color: #4a7c59;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            background: var(--tehom);
+            color: var(--gold);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .question-category {
+            font-size: 0.85rem;
+            color: var(--gold-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            color: var(--tehom);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .question-context {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            border: 2px solid var(--scroll-dark);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            border-color: var(--gold);
+            background: rgba(193, 154, 107, 0.05);
+        }
+
+        .option.selected {
+            border-color: var(--gold);
+            background: rgba(193, 154, 107, 0.1);
+        }
+
+        .option input {
+            display: none;
+        }
+
+        .option-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+
+        .option.selected .option-radio {
+            border-color: var(--gold);
+            background: var(--gold);
+        }
+
+        .option.selected .option-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .option-label {
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--tehom);
+            margin-bottom: 4px;
+        }
+
+        .option-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .feedback-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--scroll-dark);
+        }
+
+        .feedback-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .feedback-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--scroll-dark);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+            transition: border-color 0.2s ease;
+        }
+
+        .feedback-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .feedback-input::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .progress-section {
+            background: var(--tehom);
+            color: var(--scroll);
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .export-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(26, 22, 18, 0.08);
+        }
+
+        .export-btn {
+            background: var(--gold);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-family: inherit;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin: 10px;
+        }
+
+        .export-btn:hover {
+            background: var(--gold-dark);
+        }
+
+        .export-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .export-output {
+            margin-top: 20px;
+            text-align: left;
+            background: var(--scroll-dark);
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .export-output.visible {
+            display: block;
+        }
+
+        .copy-success {
+            color: #4a7c59;
+            font-weight: 500;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .copy-success.visible {
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .question-text { font-size: 1.15rem; }
+            .container { padding: 20px 15px; }
+            .category-tabs { gap: 8px; }
+            .category-tab { padding: 8px 15px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI CONTENT CONSTRAINTS</h1>
+            <p class="subtitle">Defining the rules for naturalistic, credentialed writing</p>
+        </header>
+
+        <div class="intro-text">
+            <strong>Goal:</strong> Create content that feels written by a thoughtful human scholar, not generated by AI.
+            This means: <strong>real quotes from real people</strong>, <strong>verifiable claims</strong>,
+            <strong>specific voices</strong>, and <strong>grounded theology</strong>.
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>Progress</span>
+                <span id="progress-text">0 of 18 answered</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="category-tabs">
+            <button class="category-tab active" data-category="all">All <span class="count">18</span></button>
+            <button class="category-tab" data-category="voice">Voice <span class="count">4</span></button>
+            <button class="category-tab" data-category="sources">Sources <span class="count">5</span></button>
+            <button class="category-tab" data-category="citations">Citations <span class="count">3</span></button>
+            <button class="category-tab" data-category="authenticity">Authenticity <span class="count">4</span></button>
+            <button class="category-tab" data-category="verification">Verification <span class="count">2</span></button>
+        </div>
+
+        <div id="questions-container">
+            <!-- Questions will be inserted here -->
+        </div>
+
+        <div class="export-section">
+            <h2 style="margin-bottom: 15px; color: var(--tehom);">Export Your Decisions</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">Copy your responses to paste back into the conversation.</p>
+            <button class="export-btn" id="export-btn">Copy All Decisions</button>
+            <button class="export-btn" id="preview-btn" style="background: var(--tehom);">Preview</button>
+            <p class="copy-success" id="copy-success">Copied to clipboard!</p>
+            <div class="export-output" id="export-output"></div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // VOICE & TONE (4)
+            {
+                id: 1,
+                category: 'voice',
+                question: 'What theological tradition should the content primarily reflect?',
+                context: 'This shapes the vocabulary, emphasis, and theological assumptions throughout.',
+                options: [
+                    { label: 'Broadly Orthodox', desc: 'Ecumenical - draws from Catholic, Protestant, and Orthodox traditions equally' },
+                    { label: 'Evangelical Protestant', desc: 'Protestant emphasis with evangelical warmth and accessibility' },
+                    { label: 'Reformed/Calvinist', desc: 'Strong emphasis on sovereignty, grace, and systematic theology' },
+                    { label: 'Charismatic/Pentecostal', desc: 'Emphasis on the Spirit, experience, and personal encounter' }
+                ]
+            },
+            {
+                id: 2,
+                category: 'voice',
+                question: 'What reading level and accessibility?',
+                context: 'Balancing depth with approachability.',
+                options: [
+                    { label: 'Accessible (8th grade)', desc: 'Simple vocabulary, short sentences, no assumed knowledge' },
+                    { label: 'Moderate (12th grade)', desc: 'Some theological terms explained, moderate complexity' },
+                    { label: 'Educated (College)', desc: 'Assumes biblical literacy, uses theological vocabulary freely' },
+                    { label: 'Scholarly', desc: 'Academic depth, original language references, scholarly discourse' }
+                ]
+            },
+            {
+                id: 3,
+                category: 'voice',
+                question: 'What perspective/voice should devotionals use?',
+                context: 'The grammatical person shapes intimacy and tone.',
+                options: [
+                    { label: 'Second Person ("You")', desc: '"You are invited to consider..." - Direct, personal address' },
+                    { label: 'First Person Plural ("We")', desc: '"We find ourselves..." - Communal, journeying together' },
+                    { label: 'Mixed/Varied', desc: 'Switches based on content - teaching vs. reflection' },
+                    { label: 'Third Person', desc: '"The believer discovers..." - More objective, teaching-focused' }
+                ]
+            },
+            {
+                id: 4,
+                category: 'voice',
+                question: 'What devotional style/mode?',
+                context: 'The overall feel and approach of each piece.',
+                options: [
+                    { label: 'Teaching', desc: 'Primarily instructional - explaining Scripture and theology' },
+                    { label: 'Contemplative', desc: 'Meditative, slower pace, space for reflection' },
+                    { label: 'Practical', desc: 'Application-focused - how does this change my Monday?' },
+                    { label: 'Hybrid', desc: 'Teaching that moves to contemplation and ends with application' }
+                ]
+            },
+
+            // SOURCES (5)
+            {
+                id: 5,
+                category: 'sources',
+                question: 'What types of voices should be quoted?',
+                context: 'Who speaks into these devotionals besides Scripture?',
+                options: [
+                    { label: 'Historical Only', desc: 'Dead theologians only - Augustine to C.S. Lewis (pre-2000)' },
+                    { label: 'Historical + Select Modern', desc: 'Classics plus carefully chosen contemporary voices' },
+                    { label: 'Broad Range', desc: 'Church fathers through living authors and pastors' },
+                    { label: 'Primarily Scripture', desc: 'Minimize external quotes - let Scripture speak' }
+                ]
+            },
+            {
+                id: 6,
+                category: 'sources',
+                question: 'What eras should be most represented?',
+                context: 'Where do you want the weight of wisdom to come from?',
+                options: [
+                    { label: 'Church Fathers (100-500 AD)', desc: 'Augustine, Athanasius, Chrysostom, early church' },
+                    { label: 'Reformation (1500-1700)', desc: 'Luther, Calvin, Puritans, Protestant foundations' },
+                    { label: '20th Century', desc: 'Lewis, Bonhoeffer, Tozer, modern classics' },
+                    { label: 'Balanced Mix', desc: 'Intentionally draw from all eras equally' }
+                ]
+            },
+            {
+                id: 7,
+                category: 'sources',
+                question: 'Should quotes include diverse perspectives?',
+                context: 'Global Christianity, women theologians, non-Western voices.',
+                options: [
+                    { label: 'Yes, Intentionally', desc: 'Actively include women, global south, non-Western voices' },
+                    { label: 'When Natural', desc: 'Include when relevant, don\'t force it' },
+                    { label: 'Traditional Canon', desc: 'Stick to widely recognized theological voices' },
+                    { label: 'Mix by Topic', desc: 'Traditional for doctrine, diverse for lived experience' }
+                ]
+            },
+            {
+                id: 8,
+                category: 'sources',
+                question: 'How should living/contemporary authors be handled?',
+                context: 'Living authors can be controversial or change positions.',
+                options: [
+                    { label: 'Avoid Entirely', desc: 'No one born after 1950 - too risky' },
+                    { label: 'Vetted List Only', desc: 'Pre-approved list of acceptable contemporary voices' },
+                    { label: 'Careful Inclusion', desc: 'Include with awareness of potential controversy' },
+                    { label: 'Free to Include', desc: 'Any credible Christian author is fair game' }
+                ]
+            },
+            {
+                id: 9,
+                category: 'sources',
+                question: 'Can non-Christian sources be quoted?',
+                context: 'Philosophers, poets, secular thinkers who speak truth.',
+                options: [
+                    { label: 'No', desc: 'Christian sources only' },
+                    { label: 'Pre-Christian Allowed', desc: 'Plato, Aristotle, ancient wisdom - yes. Modern secular - no.' },
+                    { label: 'Sparingly', desc: 'When a secular voice illuminates a biblical truth' },
+                    { label: 'Yes, When Appropriate', desc: 'Truth is truth - attribute and use wisely' }
+                ]
+            },
+
+            // CITATIONS (3)
+            {
+                id: 10,
+                category: 'citations',
+                question: 'How should quotes be formatted?',
+                context: 'The visual and structural presentation of external voices.',
+                options: [
+                    { label: 'Inline Attributed', desc: 'As C.S. Lewis wrote, "quote here" - woven into text' },
+                    { label: 'Block Quotes', desc: 'Set apart visually with author/source below' },
+                    { label: 'Footnotes', desc: 'Superscript numbers with references at bottom' },
+                    { label: 'Mixed by Length', desc: 'Short quotes inline, long quotes as blocks' }
+                ]
+            },
+            {
+                id: 11,
+                category: 'citations',
+                question: 'How detailed should source citations be?',
+                context: 'How much bibliographic information to include.',
+                options: [
+                    { label: 'Author + Work Only', desc: '"Augustine, Confessions" - minimal' },
+                    { label: 'Author + Work + Chapter', desc: '"Augustine, Confessions, Book 7" - moderate' },
+                    { label: 'Full Academic', desc: 'Author, work, publisher, year, page - complete' },
+                    { label: 'Hyperlinked', desc: 'Link to online source when available' }
+                ]
+            },
+            {
+                id: 12,
+                category: 'citations',
+                question: 'How often should external quotes appear?',
+                context: 'The density of outside voices in each devotional.',
+                options: [
+                    { label: 'Rare (0-1 per piece)', desc: 'Mostly original reflection, occasional quote' },
+                    { label: 'Moderate (1-2 per piece)', desc: 'One anchor quote, maybe a supporting voice' },
+                    { label: 'Frequent (2-3 per piece)', desc: 'Multiple voices in conversation' },
+                    { label: 'Quote-Heavy (3+)', desc: 'Curated wisdom from many sources' }
+                ]
+            },
+
+            // AUTHENTICITY (4)
+            {
+                id: 13,
+                category: 'authenticity',
+                question: 'What phrases/patterns should be FORBIDDEN?',
+                context: 'AI tells - generic language that screams "not human."',
+                options: [
+                    { label: 'Strict Ban List', desc: 'No "in today\'s world," "journey," "unpack," etc.' },
+                    { label: 'Moderate Avoidance', desc: 'Flag common AI phrases but allow occasionally' },
+                    { label: 'Context Dependent', desc: 'Some clichés okay in certain contexts' },
+                    { label: 'Minimal Restrictions', desc: 'Focus on what TO do, not what to avoid' }
+                ]
+            },
+            {
+                id: 14,
+                category: 'authenticity',
+                question: 'Should devotionals include specific details?',
+                context: 'Concrete specifics vs. general principles.',
+                options: [
+                    { label: 'Yes, Heavily', desc: 'Dates, places, historical context, specific examples' },
+                    { label: 'Moderate Specificity', desc: 'Some concrete details, not overwhelming' },
+                    { label: 'When Verifiable', desc: 'Only include specifics that can be fact-checked' },
+                    { label: 'General Principles', desc: 'Focus on timeless truths, fewer dated specifics' }
+                ]
+            },
+            {
+                id: 15,
+                category: 'authenticity',
+                question: 'How should uncertainty be handled?',
+                context: 'When scholarship disagrees or facts are debated.',
+                options: [
+                    { label: 'Acknowledge Openly', desc: '"Scholars debate..." - show the complexity' },
+                    { label: 'Present Majority View', desc: 'State the consensus, note disagreement exists' },
+                    { label: 'Avoid Contested Topics', desc: 'Stick to what\'s clear and agreed upon' },
+                    { label: 'State Position Clearly', desc: 'Take a stance, acknowledge it\'s a stance' }
+                ]
+            },
+            {
+                id: 16,
+                category: 'authenticity',
+                question: 'What makes writing feel human vs. AI?',
+                context: 'Prioritize the most important authenticity marker.',
+                options: [
+                    { label: 'Specific Voice/Personality', desc: 'Consistent authorial presence with opinions' },
+                    { label: 'Imperfection/Tension', desc: 'Acknowledging struggle, unanswered questions' },
+                    { label: 'Concrete Particulars', desc: 'Real names, places, dates, verifiable facts' },
+                    { label: 'Emotional Honesty', desc: 'Genuine wrestling, not tidy conclusions' }
+                ]
+            },
+
+            // VERIFICATION (2)
+            {
+                id: 17,
+                category: 'verification',
+                question: 'What MUST be verified before publishing?',
+                context: 'Non-negotiable fact-checking requirements.',
+                options: [
+                    { label: 'Everything', desc: 'Every quote, date, claim, and reference verified' },
+                    { label: 'Quotes + Scripture', desc: 'All quotes accurate, all Scripture references correct' },
+                    { label: 'Scripture Only', desc: 'Scripture must be exact; other claims best-effort' },
+                    { label: 'Spot Check', desc: 'Random verification of claims across content' }
+                ]
+            },
+            {
+                id: 18,
+                category: 'verification',
+                question: 'How should Scripture be referenced?',
+                context: 'Bible translation and citation accuracy.',
+                options: [
+                    { label: 'Single Translation (ESV)', desc: 'Consistency with one reliable translation' },
+                    { label: 'Single Translation (NIV)', desc: 'Accessible, widely used translation' },
+                    { label: 'Multiple Translations', desc: 'Use whichever translation best conveys meaning' },
+                    { label: 'Original Language Notes', desc: 'Include Greek/Hebrew insights where helpful' }
+                ]
+            }
+        ];
+
+        const answers = {};
+        const feedback = {};
+
+        function renderQuestions(category = 'all') {
+            const container = document.getElementById('questions-container');
+            const filtered = category === 'all'
+                ? questions
+                : questions.filter(q => q.category === category);
+
+            container.innerHTML = filtered.map(q => `
+                <div class="question-card ${answers[q.id] ? 'answered' : ''}" data-question="${q.id}">
+                    <div class="question-header">
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-category">${q.category}</div>
+                    </div>
+                    <h3 class="question-text">${q.question}</h3>
+                    <p class="question-context">${q.context}</p>
+                    <div class="options">
+                        ${q.options.map((opt, i) => `
+                            <label class="option ${answers[q.id] === opt.label ? 'selected' : ''}">
+                                <input type="radio" name="q${q.id}" value="${opt.label}"
+                                    ${answers[q.id] === opt.label ? 'checked' : ''}>
+                                <div class="option-radio"></div>
+                                <div class="option-content">
+                                    <div class="option-label">${opt.label}</div>
+                                    <div class="option-description">${opt.desc}</div>
+                                </div>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-section">
+                        <label class="feedback-label">Additional thoughts or clarifications:</label>
+                        <textarea class="feedback-input"
+                            placeholder="Any nuance or context for this decision..."
+                            data-question="${q.id}">${feedback[q.id] || ''}</textarea>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add event listeners
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const input = this.querySelector('input');
+                    const questionId = parseInt(input.name.replace('q', ''));
+                    answers[questionId] = input.value;
+                    renderQuestions(category);
+                    updateProgress();
+                });
+            });
+
+            document.querySelectorAll('.feedback-input').forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    const questionId = parseInt(this.dataset.question);
+                    feedback[questionId] = this.value;
+                });
+            });
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(answers).length;
+            const total = questions.length;
+            const percent = (answered / total) * 100;
+
+            document.getElementById('progress-text').textContent = `${answered} of ${total} answered`;
+            document.getElementById('progress-fill').style.width = `${percent}%`;
+        }
+
+        function generateExport() {
+            let output = '## AI CONTENT CONSTRAINTS DECISIONS\n\n';
+
+            const categories = {
+                'voice': 'VOICE & TONE',
+                'sources': 'SOURCES',
+                'citations': 'CITATIONS',
+                'authenticity': 'AUTHENTICITY MARKERS',
+                'verification': 'VERIFICATION'
+            };
+
+            for (const [cat, title] of Object.entries(categories)) {
+                const catQuestions = questions.filter(q => q.category === cat);
+                output += `### ${title}\n\n`;
+
+                for (const q of catQuestions) {
+                    output += `**${q.question}**\n`;
+                    output += answers[q.id] ? `${answers[q.id]}\n` : `_Not answered_\n`;
+                    if (feedback[q.id]) {
+                        output += `_Notes: "${feedback[q.id]}"_\n`;
+                    }
+                    output += '\n';
+                }
+            }
+
+            return output;
+        }
+
+        // Tab switching
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                renderQuestions(this.dataset.category);
+            });
+        });
+
+        // Export buttons
+        document.getElementById('export-btn').addEventListener('click', function() {
+            const output = generateExport();
+            navigator.clipboard.writeText(output).then(() => {
+                document.getElementById('copy-success').classList.add('visible');
+                setTimeout(() => {
+                    document.getElementById('copy-success').classList.remove('visible');
+                }, 2000);
+            });
+        });
+
+        document.getElementById('preview-btn').addEventListener('click', function() {
+            const output = generateExport();
+            const outputEl = document.getElementById('export-output');
+            outputEl.textContent = output;
+            outputEl.classList.toggle('visible');
+        });
+
+        // Initialize
+        renderQuestions();
+        updateProgress();
+    </script>
+</body>
+</html>
