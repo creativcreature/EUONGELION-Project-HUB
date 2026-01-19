@@ -1,0 +1,366 @@
+{
+  "project": "EUONGELION",
+  "created": "2026-01-19",
+  "lastUpdated": "2026-01-19",
+  "completionSignal": "<promise>COMPLETE</promise>",
+
+  "tasks": {
+    "critical": [
+      {
+        "id": "CRIT-001",
+        "name": "Remove build bypass settings",
+        "description": "Remove ignoreBuildErrors: true and ignoreDuringBuilds: true from next.config.js",
+        "file": "euongelion/next.config.js",
+        "verification": "Build runs without bypass flags; errors surface",
+        "passes": false,
+        "blocksIds": ["CRIT-002", "CRIT-003"]
+      },
+      {
+        "id": "CRIT-002",
+        "name": "Fix TypeScript errors",
+        "description": "Fix all TypeScript errors that appear after removing ignoreBuildErrors",
+        "verification": "npm run build completes with 0 TypeScript errors",
+        "passes": false,
+        "blockedBy": ["CRIT-001"]
+      },
+      {
+        "id": "CRIT-003",
+        "name": "Fix ESLint errors",
+        "description": "Fix all ESLint errors that appear after removing ignoreDuringBuilds",
+        "verification": "npm run lint completes with 0 errors",
+        "passes": false,
+        "blockedBy": ["CRIT-001"]
+      },
+      {
+        "id": "CRIT-004",
+        "name": "Implement signIn() in authStore",
+        "description": "Replace TODO with actual Supabase auth.signInWithPassword call",
+        "file": "euongelion/app/stores/authStore.ts",
+        "line": 120,
+        "verification": "User can sign in with email/password; session persists",
+        "passes": false
+      },
+      {
+        "id": "CRIT-005",
+        "name": "Implement signUp() in authStore",
+        "description": "Replace TODO with actual Supabase auth.signUp call with email verification",
+        "file": "euongelion/app/stores/authStore.ts",
+        "line": 171,
+        "verification": "User can create account; verification email sent",
+        "passes": false
+      },
+      {
+        "id": "CRIT-006",
+        "name": "Implement signOut() in authStore",
+        "description": "Replace TODO with actual Supabase auth.signOut call",
+        "file": "euongelion/app/stores/authStore.ts",
+        "line": 205,
+        "verification": "User session cleared on signOut; redirects to home",
+        "passes": false
+      },
+      {
+        "id": "CRIT-007",
+        "name": "Implement token refresh in authStore",
+        "description": "Replace TODO with actual token refresh logic",
+        "file": "euongelion/app/stores/authStore.ts",
+        "line": 230,
+        "verification": "Session persists across page reloads; tokens refresh before expiry",
+        "passes": false,
+        "blockedBy": ["CRIT-004"]
+      },
+      {
+        "id": "CRIT-008",
+        "name": "Implement password reset in authStore",
+        "description": "Replace TODO with Supabase auth.resetPasswordForEmail",
+        "file": "euongelion/app/stores/authStore.ts",
+        "line": 261,
+        "verification": "Password reset email sends; reset link works",
+        "passes": false
+      },
+      {
+        "id": "CRIT-009",
+        "name": "Connect /api/devotionals/ to Supabase",
+        "description": "Replace placeholder data with actual Supabase queries",
+        "files": [
+          "euongelion/app/api/devotionals/route.ts",
+          "euongelion/app/api/devotionals/[id]/route.ts"
+        ],
+        "verification": "GET /api/devotionals returns real data from database",
+        "passes": false
+      },
+      {
+        "id": "CRIT-010",
+        "name": "Connect /api/series/ to Supabase",
+        "description": "Replace placeholder data with actual Supabase queries",
+        "files": [
+          "euongelion/app/api/series/route.ts",
+          "euongelion/app/api/series/[slug]/route.ts"
+        ],
+        "verification": "GET /api/series returns real data from database",
+        "passes": false
+      },
+      {
+        "id": "CRIT-011",
+        "name": "Connect /api/user/progress/ to Supabase",
+        "description": "Replace placeholder data with actual user progress tracking",
+        "file": "euongelion/app/api/user/progress/route.ts",
+        "verification": "User progress saves and retrieves from database",
+        "passes": false
+      },
+      {
+        "id": "CRIT-012",
+        "name": "Connect /api/user/bookmarks/ to Supabase",
+        "description": "Replace placeholder data with actual bookmark CRUD",
+        "file": "euongelion/app/api/user/bookmarks/route.ts",
+        "verification": "Bookmarks create, read, delete from database",
+        "passes": false
+      },
+      {
+        "id": "CRIT-013",
+        "name": "Load seed content into database",
+        "description": "Insert at least 7 devotionals and 2 series into Supabase",
+        "verification": "API returns 7+ devotionals and 2+ series with real content",
+        "passes": false,
+        "blockedBy": ["CRIT-009", "CRIT-010"]
+      }
+    ],
+
+    "high": [
+      {
+        "id": "HIGH-001",
+        "name": "Sanitize dangerouslySetInnerHTML with DOMPurify",
+        "description": "Add DOMPurify to DevotionalReader.tsx and devotional page",
+        "verification": "XSS payloads in content are sanitized; no script execution",
+        "passes": false
+      },
+      {
+        "id": "HIGH-002",
+        "name": "Implement CSP header in middleware",
+        "description": "Apply Content Security Policy header using generated nonce",
+        "verification": "Response headers include CSP; inline scripts use nonce",
+        "passes": false
+      },
+      {
+        "id": "HIGH-003",
+        "name": "Set up production environment variables",
+        "description": "Configure VAPID keys, Sentry DSN, verification codes",
+        "verification": "All required env vars present in production config",
+        "passes": false
+      },
+      {
+        "id": "HIGH-004",
+        "name": "Implement rate limiting",
+        "description": "Add actual rate limit tracking (headers exist but no tracking)",
+        "verification": "API returns 429 after exceeding rate limit",
+        "passes": false
+      },
+      {
+        "id": "HIGH-005",
+        "name": "Create /offline fallback page",
+        "description": "Create offline.tsx page for PWA offline state",
+        "verification": "Offline page renders when network unavailable",
+        "passes": false
+      },
+      {
+        "id": "HIGH-006",
+        "name": "Complete Privacy Policy",
+        "description": "Write and publish Privacy Policy document",
+        "verification": "/privacy route renders complete policy",
+        "passes": false
+      },
+      {
+        "id": "HIGH-007",
+        "name": "Complete Terms of Service",
+        "description": "Write and publish Terms of Service document",
+        "verification": "/terms route renders complete ToS",
+        "passes": false
+      },
+      {
+        "id": "HIGH-008",
+        "name": "Set up Sentry error tracking",
+        "description": "Complete Sentry integration (10 TODOs in sentry.ts)",
+        "file": "euongelion/app/src/lib/error/sentry.ts",
+        "verification": "Errors captured and visible in Sentry dashboard",
+        "passes": false
+      },
+      {
+        "id": "HIGH-009",
+        "name": "Connect Soul Audit to database",
+        "description": "Fetch questions from DB; save results to DB",
+        "file": "euongelion/app/api/soul-audit/submit/route.ts",
+        "verification": "Soul Audit questions load from DB; results persist",
+        "passes": false
+      },
+      {
+        "id": "HIGH-010",
+        "name": "Connect Zustand stores to API endpoints",
+        "description": "Implement actual API calls in all store files",
+        "files": [
+          "euongelion/app/stores/devotionalStore.ts",
+          "euongelion/app/stores/userStore.ts",
+          "euongelion/app/stores/progressStore.ts",
+          "euongelion/app/stores/bookmarkStore.ts"
+        ],
+        "verification": "Stores fetch real data; mutations persist to backend",
+        "passes": false
+      },
+      {
+        "id": "HIGH-011",
+        "name": "Implement CMS content fetching in pages",
+        "description": "Replace placeholder content in page components",
+        "verification": "Pages render real content from API/database",
+        "passes": false
+      },
+      {
+        "id": "HIGH-012",
+        "name": "Test protected routes",
+        "description": "Verify auth redirects work correctly",
+        "verification": "Unauthenticated users redirected from protected routes",
+        "passes": false,
+        "blockedBy": ["CRIT-004", "CRIT-005", "CRIT-006"]
+      },
+      {
+        "id": "HIGH-013",
+        "name": "Verify RLS policies",
+        "description": "Test Row Level Security in production Supabase",
+        "verification": "Users can only access their own data",
+        "passes": false
+      }
+    ],
+
+    "medium": [
+      {
+        "id": "MED-001",
+        "name": "Add aria-hidden to LoadingSpinner SVG",
+        "description": "Quick a11y fix",
+        "verification": "SVG has aria-hidden='true'",
+        "passes": false
+      },
+      {
+        "id": "MED-002",
+        "name": "Display reading time estimate",
+        "description": "Show already-calculated reading time on devotionals",
+        "verification": "Reading time visible on devotional cards/pages",
+        "passes": false
+      },
+      {
+        "id": "MED-003",
+        "name": "Add password strength meter",
+        "description": "Visual feedback for password validation",
+        "verification": "Strength indicator shows during password input",
+        "passes": false
+      },
+      {
+        "id": "MED-004",
+        "name": "Add display: swap to fonts",
+        "description": "Performance fix for font loading",
+        "verification": "Font CSS includes display: swap",
+        "passes": false
+      },
+      {
+        "id": "MED-005",
+        "name": "Create /share route handler",
+        "description": "PWA share target route",
+        "verification": "Share intent opens app correctly",
+        "passes": false
+      },
+      {
+        "id": "MED-006",
+        "name": "Increase touch targets to 44px",
+        "description": "Fix sm/iconSm button variants",
+        "verification": "All buttons meet 44px minimum",
+        "passes": false
+      },
+      {
+        "id": "MED-007",
+        "name": "Add React.memo to DevotionalCard",
+        "description": "Performance optimization for lists",
+        "verification": "Component wrapped in React.memo",
+        "passes": false
+      },
+      {
+        "id": "MED-008",
+        "name": "Dynamic imports for Modal/Drawer",
+        "description": "Code splitting for these components",
+        "verification": "Modal/Drawer loaded via dynamic import",
+        "passes": false
+      },
+      {
+        "id": "MED-009",
+        "name": "Remove unnecessary console.logs",
+        "description": "Clean up ~40 debug statements",
+        "verification": "No debug console.logs in production code",
+        "passes": false
+      },
+      {
+        "id": "MED-010",
+        "name": "Create structuredData.ts",
+        "description": "Missing SEO structured data file",
+        "verification": "File exists at /lib/seo/structuredData.ts",
+        "passes": false
+      },
+      {
+        "id": "MED-011",
+        "name": "Implement Daily Reminders",
+        "description": "Time picker for preferred reminder time",
+        "verification": "User can set reminder time; notifications fire",
+        "passes": false
+      },
+      {
+        "id": "MED-012",
+        "name": "Implement Push Notifications",
+        "description": "Web Push API integration",
+        "verification": "Push notifications received on device",
+        "passes": false
+      }
+    ],
+
+    "low": [
+      {
+        "id": "LOW-001",
+        "name": "Streak Celebrations",
+        "description": "Milestone recognition at 7, 30, 100, 365 days",
+        "verification": "Celebration modal shows at milestones",
+        "passes": false
+      },
+      {
+        "id": "LOW-002",
+        "name": "Social Login (Google)",
+        "description": "Google OAuth integration",
+        "verification": "User can sign in with Google",
+        "passes": false
+      },
+      {
+        "id": "LOW-003",
+        "name": "Related Devotionals",
+        "description": "End-of-devotional suggestions",
+        "verification": "Related content shows after devotional",
+        "passes": false
+      },
+      {
+        "id": "LOW-004",
+        "name": "Font Size Settings",
+        "description": "Reading customization",
+        "verification": "User can adjust font size; preference persists",
+        "passes": false
+      },
+      {
+        "id": "LOW-005",
+        "name": "Cron Job Implementation",
+        "description": "Complete /lib/cron/ placeholders",
+        "verification": "Scheduled jobs run successfully",
+        "passes": false
+      }
+    ]
+  },
+
+  "summary": {
+    "total": 43,
+    "critical": 13,
+    "high": 13,
+    "medium": 12,
+    "low": 5,
+    "completed": 0,
+    "remaining": 43
+  }
+}
