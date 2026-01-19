@@ -1268,78 +1268,53 @@
             }
         }
 
-        /* Mobile Header */
-        .mobile-header {
+        /* Mobile Bottom Tab Bar */
+        .mobile-tabs {
             display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
             background: #1A1612;
-            border-bottom: 1px solid rgba(193, 154, 107, 0.3);
-            position: relative;
-            z-index: 100;
+            border-top: 1px solid rgba(193, 154, 107, 0.3);
+            z-index: 1000;
+            padding: 8px 0;
+            padding-bottom: env(safe-area-inset-bottom, 8px);
         }
 
-        .mobile-header-bar {
+        .mobile-tabs-inner {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
-            padding: 15px 20px;
         }
 
-        .mobile-header-title {
-            font-size: 1.2rem;
-            color: var(--gold);
-            font-weight: 600;
-            letter-spacing: 0.1em;
-        }
-
-        .mobile-menu-btn {
+        .mobile-tab {
             display: flex;
-            width: 44px;
-            height: 44px;
-            background: transparent;
-            border: 1px solid rgba(193, 154, 107, 0.3);
-            border-radius: 8px;
-            cursor: pointer;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .mobile-menu-btn span {
-            display: block;
-            width: 22px;
-            height: 2px;
-            background: var(--gold);
-            transition: all 0.3s ease;
-        }
-
-        .mobile-nav {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: #1A1612;
-        }
-
-        .mobile-nav.open {
-            max-height: 500px;
-        }
-
-        .mobile-nav-item {
-            display: block;
-            padding: 15px 20px;
-            color: var(--scroll);
+            padding: 8px 12px;
+            color: rgba(247, 243, 237, 0.5);
             text-decoration: none;
-            border-top: 1px solid rgba(193, 154, 107, 0.1);
             cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: 10px;
+            min-width: 60px;
         }
 
-        .mobile-nav-item:active {
-            background: rgba(193, 154, 107, 0.2);
+        .mobile-tab-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .mobile-tab.active {
+            color: var(--gold);
         }
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .mobile-header {
+            .mobile-tabs {
                 display: block;
             }
 
@@ -1349,10 +1324,12 @@
 
             .main {
                 margin-left: 0;
+                padding-bottom: 80px;
             }
 
             .view {
                 padding: 20px;
+                padding-bottom: 100px;
             }
 
             .page-header h1 {
@@ -1476,26 +1453,31 @@
 </head>
 <body>
     <div class="app">
-        <!-- Mobile Header -->
-        <header class="mobile-header">
-            <div class="mobile-header-bar">
-                <span class="mobile-header-title">EUONGELION</span>
-                <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+        <!-- Mobile Bottom Tab Bar -->
+        <nav class="mobile-tabs">
+            <div class="mobile-tabs-inner">
+                <button class="mobile-tab active" data-view="morning">
+                    <span class="mobile-tab-icon">☀</span>
+                    <span>Today</span>
+                </button>
+                <button class="mobile-tab" data-view="sprint">
+                    <span class="mobile-tab-icon">◎</span>
+                    <span>Sprint</span>
+                </button>
+                <button class="mobile-tab" data-view="status">
+                    <span class="mobile-tab-icon">▣</span>
+                    <span>Status</span>
+                </button>
+                <button class="mobile-tab" data-view="checklist">
+                    <span class="mobile-tab-icon">✓</span>
+                    <span>Checklist</span>
+                </button>
+                <button class="mobile-tab" data-view="discovery">
+                    <span class="mobile-tab-icon">◉</span>
+                    <span>More</span>
                 </button>
             </div>
-            <nav class="mobile-nav" id="mobile-nav">
-                <div class="mobile-nav-item" data-view="morning">☀ Good Morning</div>
-                <div class="mobile-nav-item" data-view="sprint">◎ Sprint Overview</div>
-                <div class="mobile-nav-item" data-view="status">▣ Project Status</div>
-                <div class="mobile-nav-item" data-view="checklist">✓ Pre-Flight Checklist</div>
-                <div class="mobile-nav-item" data-view="discovery">◉ App Discovery</div>
-                <div class="mobile-nav-item" data-view="mood-boards">◈ Visual Mood Boards</div>
-                <div class="mobile-nav-item" data-view="archive">◫ Completed Decisions</div>
-            </nav>
-        </header>
+        </nav>
 
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
@@ -3540,36 +3522,33 @@ Please start with step 1. After each step, verify it works before moving to the 
     </div>
 
     <script>
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const mobileNav = document.getElementById('mobile-nav');
-            mobileNav.classList.toggle('open');
-        }
-
-        function closeMobileMenu() {
-            const mobileNav = document.getElementById('mobile-nav');
-            mobileNav.classList.remove('open');
-        }
-
         // Navigation - Desktop sidebar
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
                 this.classList.add('active');
                 document.getElementById(this.dataset.view).classList.add('active');
+                // Sync mobile tab
+                const mobileTab = document.querySelector('.mobile-tab[data-view="' + this.dataset.view + '"]');
+                if (mobileTab) mobileTab.classList.add('active');
             });
         });
 
-        // Navigation - Mobile menu
-        document.querySelectorAll('.mobile-nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        // Navigation - Mobile tabs
+        document.querySelectorAll('.mobile-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                this.classList.add('active');
                 document.getElementById(this.dataset.view).classList.add('active');
-                // Also update desktop nav for consistency
-                document.querySelector('.nav-item[data-view="' + this.dataset.view + '"]').classList.add('active');
-                closeMobileMenu();
+                // Sync desktop nav
+                const navItem = document.querySelector('.nav-item[data-view="' + this.dataset.view + '"]');
+                if (navItem) navItem.classList.add('active');
+                // Scroll to top
+                window.scrollTo(0, 0);
             });
         });
 
