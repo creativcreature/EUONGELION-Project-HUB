@@ -2056,82 +2056,68 @@
 
                 <div style="background: var(--warning); color: var(--tehom); padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;">
                     <span style="font-weight: 600;">DAYS REMAINING: <span id="days-to-feb1">--</span></span>
-                    <span>Jan 17 → Feb 1, 2026</span>
+                    <span>Jan 19 → Feb 1, 2026</span>
+                </div>
+
+                <!-- VERIFIED STATUS SUMMARY -->
+                <div style="background: rgba(193,154,107,0.15); border: 2px solid var(--gold); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+                    <h3 style="color: var(--gold); margin-bottom: 15px; font-size: 1.1rem;">VERIFIED STATUS (Jan 19, 2026)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--success);">6</div>
+                            <div style="font-size: 0.75rem; color: rgba(247,243,237,0.7);">Features Complete</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--warning);">33</div>
+                            <div style="font-size: 0.75rem; color: rgba(247,243,237,0.7);">Tasks Remaining</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--gold);">~118</div>
+                            <div style="font-size: 0.75rem; color: rgba(247,243,237,0.7);">Est. Hours Left</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--gold);">40-50%</div>
+                            <div style="font-size: 0.75rem; color: rgba(247,243,237,0.7);">Completion</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
-                    <!-- YOU (Founder) Tasks -->
-                    <div class="card" style="border-color: var(--gold);">
-                        <div class="card-header">
-                            <span class="card-title" style="font-size: 1.3rem;">👤 YOU (Founder)</span>
-                        </div>
-                        <p style="color: rgba(247,243,237,0.6); margin-bottom: 20px; font-style: italic;">Decision-making, review, approval</p>
-
-                        <div style="margin-bottom: 20px;">
-                            <strong style="color: var(--gold);">TODAY (Jan 17)</strong>
-                            <ul class="sprint-tasks">
-                                <li class="sprint-task"><span class="task-check"></span>Complete Visual Identity decisions</li>
-                            </ul>
-                        </div>
-
-                        <div style="margin-bottom: 20px;">
-                            <strong style="color: var(--gold);">DAILY (Jan 18-31)</strong>
-                            <ul class="sprint-tasks">
-                                <li class="sprint-task"><span class="task-check"></span>Review 40-50 devotionals/day</li>
-                                <li class="sprint-task"><span class="task-check"></span>Approve/reject/edit content batches</li>
-                                <li class="sprint-task"><span class="task-check"></span>Test app features as built</li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <strong style="color: var(--gold);">ONE-TIME</strong>
-                            <ul class="sprint-tasks">
-                                <li class="sprint-task"><span class="task-check"></span>Provide wokeGod brand assets</li>
-                                <li class="sprint-task"><span class="task-check"></span>Set up Supabase project</li>
-                                <li class="sprint-task"><span class="task-check"></span>Configure Vercel deployment</li>
-                                <li class="sprint-task"><span class="task-check"></span>Domain/DNS setup</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- CLAUDE Tasks -->
+                    <!-- VERIFIED COMPLETE -->
                     <div class="card" style="border-color: var(--success);">
                         <div class="card-header">
-                            <span class="card-title" style="font-size: 1.3rem;">🤖 CLAUDE</span>
+                            <span class="card-title" style="font-size: 1.3rem;">VERIFIED COMPLETE</span>
+                            <span class="card-badge badge-complete">6 Items</span>
                         </div>
-                        <p style="color: rgba(247,243,237,0.6); margin-bottom: 20px; font-style: italic;">Generation, building, automation</p>
+                        <p style="color: rgba(247,243,237,0.6); margin-bottom: 20px; font-style: italic;">Confirmed in codebase Jan 19</p>
 
-                        <div style="margin-bottom: 20px;">
-                            <strong style="color: var(--success);">CONTENT (Jan 17-28)</strong>
-                            <ul class="sprint-tasks">
-                                <li class="sprint-task"><span class="task-check"></span>Generate 365-day devotional series</li>
-                                <li class="sprint-task"><span class="task-check"></span>Generate 20+ standard series (140+)</li>
-                                <li class="sprint-task"><span class="task-check"></span>Verify all Scripture references</li>
-                                <li class="sprint-task"><span class="task-check"></span>Verify all quotes against sources</li>
-                            </ul>
+                        <ul class="sprint-tasks">
+                            <li class="sprint-task done"><span class="task-check">✓</span>Next.js 16 + React 19 scaffold</li>
+                            <li class="sprint-task done"><span class="task-check">✓</span>Core UI components (16 total)</li>
+                            <li class="sprint-task done"><span class="task-check">✓</span>Devotional reader view</li>
+                            <li class="sprint-task done"><span class="task-check">✓</span>Series/navigation system</li>
+                            <li class="sprint-task done"><span class="task-check">✓</span>Dark mode (system preference)</li>
+                            <li class="sprint-task done"><span class="task-check">✓</span>Content loading (19 series JSON)</li>
+                        </ul>
+                    </div>
+
+                    <!-- NOT COMPLETE (Was Claimed) -->
+                    <div class="card" style="border-color: var(--error);">
+                        <div class="card-header">
+                            <span class="card-title" style="font-size: 1.3rem;">NOT COMPLETE</span>
+                            <span class="card-badge badge-error">Needs Work</span>
                         </div>
+                        <p style="color: rgba(247,243,237,0.6); margin-bottom: 20px; font-style: italic;">Claimed but not implemented</p>
 
-                        <div style="margin-bottom: 20px;">
-                            <strong style="color: var(--success);">APP BUILD (Jan 18-31)</strong>
-                            <ul class="sprint-tasks">
-                                <li class="sprint-task"><span class="task-check"></span>Next.js 16 + React 19 scaffold</li>
-                                <li class="sprint-task"><span class="task-check"></span>Supabase schema + auth</li>
-                                <li class="sprint-task"><span class="task-check"></span>Core UI components</li>
-                                <li class="sprint-task"><span class="task-check"></span>Devotional reader view</li>
-                                <li class="sprint-task"><span class="task-check"></span>Series/navigation system</li>
-                                <li class="sprint-task"><span class="task-check"></span>Soul Audit feature</li>
-                                <li class="sprint-task"><span class="task-check"></span>Dark mode</li>
-                                <li class="sprint-task"><span class="task-check"></span>PWA manifest + offline</li>
-                            </ul>
-                        </div>
+                        <ul class="sprint-tasks">
+                            <li class="sprint-task"><span class="task-check" style="color: var(--error);">✗</span>Supabase Auth (keys configured, zero usage)</li>
+                            <li class="sprint-task"><span class="task-check" style="color: var(--error);">✗</span>Soul Audit feature (not started)</li>
+                            <li class="sprint-task"><span class="task-check" style="color: var(--error);">✗</span>PWA manifest + offline (not started)</li>
+                        </ul>
 
-                        <div>
-                            <strong style="color: var(--success);">ASSETS</strong>
-                            <ul class="sprint-tasks">
-                                <li class="sprint-task"><span class="task-check"></span>Generate imagery (per decisions)</li>
-                                <li class="sprint-task"><span class="task-check"></span>Icon system</li>
-                                <li class="sprint-task"><span class="task-check"></span>Social share templates</li>
-                            </ul>
+                        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(247,243,237,0.1);">
+                            <strong style="color: var(--warning);">CRITICAL TASKS (13)</strong>
+                            <p style="font-size: 0.85rem; color: rgba(247,243,237,0.6); margin-top: 8px;">Supabase client, DB schema, Auth flow, PWA setup, Soul Audit page</p>
                         </div>
                     </div>
                 </div>
@@ -2225,7 +2211,22 @@
             <div class="view" id="status">
                 <div class="page-header">
                     <h1>Project Status</h1>
-                    <p>Current state of all workstreams</p>
+                    <p>Verified status as of January 19, 2026</p>
+                </div>
+
+                <!-- Overall Progress Bar -->
+                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-weight: 600; color: var(--gold);">Overall Completion</span>
+                        <span style="color: var(--gold);">~45%</span>
+                    </div>
+                    <div style="background: rgba(247,243,237,0.1); border-radius: 4px; height: 20px; overflow: hidden;">
+                        <div style="background: linear-gradient(90deg, var(--success), var(--gold)); width: 45%; height: 100%; border-radius: 4px;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.85rem; color: rgba(247,243,237,0.6);">
+                        <span>6 features complete</span>
+                        <span>33 tasks remaining (~118 hrs)</span>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -2241,7 +2242,7 @@
                         <span class="card-title">Content Framework</span>
                         <span class="card-badge badge-complete">Complete</span>
                     </div>
-                    <p>AI constraints doc, source bank (~60 quotes), all series outlines created.</p>
+                    <p>AI constraints doc, source bank (~60 quotes), 19 series outlines created and loaded as JSON.</p>
                 </div>
 
                 <div class="card">
@@ -2249,23 +2250,48 @@
                         <span class="card-title">Visual Identity</span>
                         <span class="card-badge badge-progress">In Progress</span>
                     </div>
-                    <p>Core colors and typography defined. Imagery strategy, photography style, and icons need decisions.</p>
+                    <p>Core colors and typography defined. Mood board created with 5 design directions. Icons and imagery pending.</p>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Content Production</span>
-                        <span class="card-badge badge-pending">Pending</span>
+                        <span class="card-badge badge-progress">In Progress</span>
                     </div>
-                    <p>0 of 505+ devotionals written. Awaiting production templates.</p>
+                    <p>19 series converted to JSON format. 365-day devotional series and additional content still needed.</p>
                 </div>
 
-                <div class="card">
+                <div class="card" style="border-color: var(--gold);">
                     <div class="card-header">
-                        <span class="card-title">Development</span>
-                        <span class="card-badge badge-pending">Pending</span>
+                        <span class="card-title">App Development</span>
+                        <span class="card-badge badge-progress">40-50%</span>
                     </div>
-                    <p>Tech stack decided (Next.js 16, React 19, Supabase, Vercel). Build not started.</p>
+                    <p style="margin-bottom: 15px;">Next.js 16 + React 19 scaffold built. Core UI and reader functional.</p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.9rem;">
+                        <div>
+                            <strong style="color: var(--success);">COMPLETE:</strong>
+                            <ul style="margin: 8px 0 0 0; padding-left: 20px; color: rgba(247,243,237,0.7);">
+                                <li>Next.js 16 + React 19</li>
+                                <li>16 UI components</li>
+                                <li>Devotional reader</li>
+                                <li>Series navigation</li>
+                                <li>Dark mode (system)</li>
+                                <li>Content loading</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong style="color: var(--error);">NOT COMPLETE:</strong>
+                            <ul style="margin: 8px 0 0 0; padding-left: 20px; color: rgba(247,243,237,0.7);">
+                                <li>Supabase integration</li>
+                                <li>Authentication</li>
+                                <li>Soul Audit feature</li>
+                                <li>PWA + offline</li>
+                                <li>User progress tracking</li>
+                                <li>Bookmarks system</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -2273,7 +2299,33 @@
                         <span class="card-title">Testing</span>
                         <span class="card-badge badge-pending">Pending</span>
                     </div>
-                    <p>Internal testing first, then beta testers. Beta recruitment not started.</p>
+                    <p>Build verification needed. Beta testing not started.</p>
+                </div>
+
+                <!-- Task Breakdown -->
+                <div style="margin-top: 30px; background: rgba(247,243,237,0.03); border: 1px solid rgba(193,154,107,0.2); border-radius: 12px; padding: 20px;">
+                    <h3 style="color: var(--gold); margin-bottom: 15px;">Task Breakdown by Priority</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center;">
+                        <div style="background: rgba(214,40,57,0.2); padding: 15px; border-radius: 8px; border: 1px solid rgba(214,40,57,0.3);">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--error);">13</div>
+                            <div style="font-size: 0.8rem; color: rgba(247,243,237,0.7);">Critical</div>
+                        </div>
+                        <div style="background: rgba(193,154,107,0.2); padding: 15px; border-radius: 8px; border: 1px solid rgba(193,154,107,0.3);">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--gold);">10</div>
+                            <div style="font-size: 0.8rem; color: rgba(247,243,237,0.7);">High</div>
+                        </div>
+                        <div style="background: rgba(247,243,237,0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(247,243,237,0.2);">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--bone);">6</div>
+                            <div style="font-size: 0.8rem; color: rgba(247,243,237,0.7);">Medium</div>
+                        </div>
+                        <div style="background: rgba(247,243,237,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(247,243,237,0.1);">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: rgba(247,243,237,0.5);">4</div>
+                            <div style="font-size: 0.8rem; color: rgba(247,243,237,0.7);">Low</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.85rem; color: rgba(247,243,237,0.6); text-align: center;">
+                        See <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">/tools/ralph-wiggum/tasks.json</code> for full task list
+                    </p>
                 </div>
             </div>
 
