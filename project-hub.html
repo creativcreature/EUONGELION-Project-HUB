@@ -1328,13 +1328,19 @@
             }
 
             .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 260px;
+                height: 100vh;
                 transform: translateX(-100%);
                 z-index: 1000;
                 transition: transform 0.3s ease;
+                background: rgba(26, 22, 18, 0.98);
             }
 
             .sidebar.open {
-                transform: translateX(0);
+                transform: translateX(0) !important;
             }
 
             .sidebar-overlay.active {
