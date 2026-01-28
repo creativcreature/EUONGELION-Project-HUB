@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EUONGELION Visual Direction — Creative Pitch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --tehom: #1A1612;
+      --scroll: #F7F3ED;
+      --gold: #C19A6B;
+      --burgundy: #6B2C2C;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--tehom);
+      color: var(--scroll);
+      overflow-x: hidden;
+    }
+    
+    /* SECTIONS */
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 40px;
+      position: relative;
+    }
+    
+    /* OPENING */
+    .opening {
+      text-align: center;
+    }
+    
+    .opening h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      margin-bottom: 40px;
+      color: var(--gold);
+    }
+    
+    .opening .subtitle {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 60px;
+    }
+    
+    .opening .tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+    
+    /* PROBLEM */
+    .problem {
+      background: var(--scroll);
+      color: var(--tehom);
+    }
+    
+    .problem h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      margin-bottom: 60px;
+      text-align: center;
+    }
+    
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+    }
+    
+    .problem-item {
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .problem-item .number {
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    
+    .problem-item p {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    
+    /* PITCH SECTIONS */
+    .pitch {
+      padding: 80px 40px;
+    }
+    
+    .pitch-number {
+      font-size: clamp(6rem, 15vw, 12rem);
+      font-weight: 100;
+      color: var(--gold);
+      opacity: 0.3;
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      line-height: 1;
+    }
+    
+    .pitch h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .pitch .concept {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 60px;
+      line-height: 1.6;
+      color: var(--gold);
+    }
+    
+    .pitch-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    @media (max-width: 900px) {
+      .pitch-content {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .pitch-left h3 {
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    
+    .pitch-left p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+    
+    .artists {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    
+    .artist-tag {
+      background: rgba(193, 154, 107, 0.2);
+      border: 1px solid var(--gold);
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+    }
+    
+    .pitch-right {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .mood-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      filter: grayscale(30%);
+      transition: filter 0.3s;
+    }
+    
+    .mood-image:hover {
+      filter: grayscale(0%);
+    }
+    
+    .characteristics {
+      list-style: none;
+      margin-top: 40px;
+    }
+    
+    .characteristics li {
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(247, 243, 237, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .characteristics li::before {
+      content: "→";
+      color: var(--gold);
+    }
+    
+    /* PITCH 1 - Sacred Minimalism */
+    .pitch-1 {
+      background: linear-gradient(135deg, var(--tehom) 0%, #2a2420 100%);
+    }
+    
+    /* PITCH 2 - Holy Grit */
+    .pitch-2 {
+      background: var(--scroll);
+      color: var(--tehom);
+    }
+    
+    .pitch-2 .pitch-number { color: var(--burgundy); }
+    .pitch-2 .concept { color: var(--burgundy); }
+    .pitch-2 .pitch-left h3 { color: var(--burgundy); }
+    .pitch-2 .artist-tag { 
+      background: rgba(107, 44, 44, 0.1);
+      border-color: var(--burgundy);
+    }
+    .pitch-2 .characteristics li::before { color: var(--burgundy); }
+    .pitch-2 .characteristics li { border-color: rgba(26, 22, 18, 0.1); }
+    
+    /* PITCH 3 - Illustrated Gospel */
+    .pitch-3 {
+      background: var(--tehom);
+    }
+    
+    /* RECOMMENDATION */
+    .recommendation {
+      background: var(--gold);
+      color: var(--tehom);
+      text-align: center;
+    }
+    
+    .recommendation h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      margin-bottom: 40px;
+    }
+    
+    .recommendation p {
+      font-size: 1.25rem;
+      max-width: 700px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+    
+    .recommendation .cta {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.5rem;
+    }
+    
+    /* FOOTER */
+    footer {
+      padding: 60px;
+      text-align: center;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+    
+    /* SCROLL INDICATOR */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+    
+    .scroll-indicator svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--gold);
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- OPENING -->
+  <section class="opening">
+    <p class="subtitle">Creative Presentation</p>
+    <h1>EUONGELION</h1>
+    <p class="tagline">"Three visual directions. One mission. Wake people up to the miraculous."</p>
+    <div class="scroll-indicator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- THE PROBLEM -->
+  <section class="problem">
+    <h2>The Problem With Christian Design</h2>
+    <div class="problem-grid">
+      <div class="problem-item">
+        <div class="number">01</div>
+        <p>It's either <strong>stale cathedral</strong> — dusty, distant, trapped in 1650.</p>
+      </div>
+      <div class="problem-item">
+        <div class="number">02</div>
+        <p>Or it's <strong>cringe contemporary</strong> — lens flares, stock photos of hands raised, Comic Sans in the bulletin.</p>
+      </div>
+      <div class="problem-item">
+        <div class="number">03</div>
+        <p>The result? <strong>Design that repels</strong> the very people who need the message most.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE OPPORTUNITY -->
+  <section class="opening">
+    <p class="subtitle">The Opportunity</p>
+    <h1 style="font-size: clamp(2rem, 5vw, 4rem);">What if the Gospel<br>looked like it <em>felt</em>?</h1>
+    <p class="tagline" style="margin-top: 40px;">
+      Ancient. Urgent. Beautiful. Uncomfortable.<br>
+      Something you'd hang on your wall — and couldn't look away from.
+    </p>
+  </section>
+
+  <!-- PITCH 1: SACRED MINIMALISM -->
+  <section class="pitch pitch-1">
+    <div class="pitch-number">01</div>
+    <h2>Sacred Minimalism</h2>
+    <p class="concept">"Museum catalog meets illuminated manuscript"</p>
+    
+    <div class="pitch-content">
+      <div class="pitch-left">
+        <h3>The Vision</h3>
+        <p>
+          Clean geometric forms floating in generous negative space. Subtle gold leaf textures catching light like ancient icons. A limited palette — tehom black, scroll white, touches of gold — that feels both contemporary and eternal.
+        </p>
+        <p>
+          This direction says: <strong>"The Gospel is sophisticated. It belongs in the Tate Modern AND the catacombs."</strong>
+        </p>
+        <p>
+          Think exhibition catalog for a show about faith. Think Kinfolk magazine if it found Jesus. Think the quiet confidence of a monastery library.
+        </p>
+        
+        <h3 style="margin-top: 40px;">Artist DNA</h3>
+        <div class="artists">
+          <span class="artist-tag">ISO50 / Scott Hansen</span>
+          <span class="artist-tag">Tom Gauld</span>
+          <span class="artist-tag">Makoto Fujimura</span>
+        </div>
+        
+        <ul class="characteristics">
+          <li>Geometric abstraction over literal imagery</li>
+          <li>Limited palette (3-4 colors max)</li>
+          <li>Typography as art, not afterthought</li>
+          <li>Gold leaf textures as sacred accent</li>
+          <li>Extreme negative space — let the Word breathe</li>
+        </ul>
+      </div>
+      
+      <div class="pitch-right">
+        <img src="reference-images/iso50.jpg" alt="ISO50 reference" class="mood-image">
+        <img src="reference-images/makoto-fujimura.jpg" alt="Makoto Fujimura reference" class="mood-image">
+      </div>
+    </div>
+  </section>
+
+  <!-- PITCH 2: HOLY GRIT -->
+  <section class="pitch pitch-2">
+    <div class="pitch-number">02</div>
+    <h2>Holy Grit</h2>
+    <p class="concept">"Revival tent meets independent press"</p>
+    
+    <div class="pitch-content">
+      <div class="pitch-left">
+        <h3>The Vision</h3>
+        <p>
+          Risograph textures. Screen-print imperfection. The feeling of finding a stack of religious pamphlets in your grandmother's drawer — but designed by someone who worked at Criterion Collection.
+        </p>
+        <p>
+          This direction says: <strong>"Faith is tactile. It gets its hands dirty. It has texture you can feel."</strong>
+        </p>
+        <p>
+          Think A24 film poster meets old Sunday school materials. Think the beautiful imperfection of letterpress. Think what happens when indie rock aesthetics meet ancient truth.
+        </p>
+        
+        <h3 style="margin-top: 40px;">Artist DNA</h3>
+        <div class="artists">
+          <span class="artist-tag">True Grit Texture</span>
+          <span class="artist-tag">Aesthetic Apparatus</span>
+          <span class="artist-tag">Hato Press</span>
+          <span class="artist-tag">DKNG Studios</span>
+        </div>
+        
+        <ul class="characteristics">
+          <li>Visible texture — grain, halftone, paper</li>
+          <li>Limited ink colors (2-3 spot colors)</li>
+          <li>Intentional imperfection</li>
+          <li>Bold, poster-ready compositions</li>
+          <li>Feels printed, not rendered</li>
+        </ul>
+      </div>
+      
+      <div class="pitch-right">
+        <img src="reference-images/true-grit.jpg" alt="True Grit reference" class="mood-image">
+        <img src="reference-images/aesthetic-apparatus.jpg" alt="Aesthetic Apparatus reference" class="mood-image">
+      </div>
+    </div>
+  </section>
+
+  <!-- PITCH 3: ILLUSTRATED GOSPEL -->
+  <section class="pitch pitch-3">
+    <div class="pitch-number">03</div>
+    <h2>The Illustrated Gospel</h2>
+    <p class="concept">"New Yorker meets Sunday school"</p>
+    
+    <div class="pitch-content">
+      <div class="pitch-left">
+        <h3>The Vision</h3>
+        <p>
+          Editorial illustration that tells stories. Clever use of negative space. Simple shapes that carry enormous emotional weight. The kind of images that stop you mid-scroll and make you think.
+        </p>
+        <p>
+          This direction says: <strong>"Scripture is story. Let's illustrate it like the narrative masterpiece it is."</strong>
+        </p>
+        <p>
+          Think Olly Moss movie posters for parables. Think Brian Rea's emotional line work for the Psalms. Think what McSweeney's would do with Ecclesiastes.
+        </p>
+        
+        <h3 style="margin-top: 40px;">Artist DNA</h3>
+        <div class="artists">
+          <span class="artist-tag">Brian Rea</span>
+          <span class="artist-tag">Olly Moss</span>
+          <span class="artist-tag">Geoff McFetridge</span>
+          <span class="artist-tag">Tom Gauld</span>
+        </div>
+        
+        <ul class="characteristics">
+          <li>Narrative-driven imagery</li>
+          <li>Clever negative space concepts</li>
+          <li>Simple shapes, complex meaning</li>
+          <li>Emotional resonance over decoration</li>
+          <li>Each image tells a micro-story</li>
+        </ul>
+      </div>
+      
+      <div class="pitch-right">
+        <img src="reference-images/brian-rea.jpg" alt="Brian Rea reference" class="mood-image">
+        <img src="reference-images/olly-moss.jpg" alt="Olly Moss reference" class="mood-image">
+      </div>
+    </div>
+  </section>
+
+  <!-- RECOMMENDATION -->
+  <section class="recommendation">
+    <h2>My Recommendation</h2>
+    <p>
+      Don't pick one. <strong>Layer them.</strong><br><br>
+      Sacred Minimalism as the <strong>foundation</strong> — the overall system.<br>
+      Holy Grit for <strong>texture and warmth</strong> — the tactile layer.<br>
+      Illustrated Gospel for <strong>key moments</strong> — the storytelling beats.
+    </p>
+    <p class="cta">
+      "A visual language as layered as Scripture itself."
+    </p>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="opening">
+    <p class="subtitle">The Question</p>
+    <h1 style="font-size: clamp(2rem, 5vw, 4rem);">Which direction<br>wakes you up?</h1>
+  </section>
+
+  <footer>
+    EUONGELION Visual Direction Pitch — January 2026
+  </footer>
+
+</body>
+</html>
