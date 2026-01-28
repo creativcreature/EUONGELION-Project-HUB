@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EUONGELION — Visual Direction Pitch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --tehom: #1A1612;
+      --scroll: #F7F3ED;
+      --gold: #C19A6B;
+      --burgundy: #6B2C2C;
+      --olive: #6B6B4F;
+      --shalom: #4A5F6B;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--tehom);
+      color: var(--scroll);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    
+    /* ========== UTILITY ========== */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    
+    .serif { font-family: 'Playfair Display', Georgia, serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .gold { color: var(--gold); }
+    .burgundy { color: var(--burgundy); }
+    
+    /* ========== PROGRESS BAR ========== */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--burgundy));
+      width: 0%;
+      z-index: 1000;
+    }
+    
+    /* ========== NAVIGATION ========== */
+    .nav {
+      position: fixed;
+      top: 40px;
+      right: 40px;
+      z-index: 100;
+      display: flex;
+      gap: 20px;
+    }
+    
+    .nav-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .nav-dot.active {
+      background: var(--gold);
+      transform: scale(1.3);
+    }
+    
+    /* ========== SECTIONS ========== */
+    section {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* ========== HERO ========== */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 40px;
+    }
+    
+    .hero-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 40px;
+    }
+    
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem, 12vw, 10rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      margin-bottom: 30px;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    
+    .hero-tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      max-width: 700px;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    
+    .scroll-cta {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      opacity: 0;
+    }
+    
+    .scroll-cta span {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+    
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+    
+    /* ========== PROBLEM SECTION ========== */
+    .problem {
+      background: var(--scroll);
+      color: var(--tehom);
+      padding: 120px 40px;
+    }
+    
+    .problem-intro {
+      text-align: center;
+      margin-bottom: 100px;
+    }
+    
+    .problem-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      margin-bottom: 30px;
+    }
+    
+    .problem-intro p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto;
+      opacity: 0.7;
+    }
+    
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    @media (max-width: 900px) {
+      .problem-grid { grid-template-columns: 1fr; }
+    }
+    
+    .problem-card {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    
+    .problem-card .number {
+      font-size: 6rem;
+      font-weight: 200;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    
+    .problem-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      margin-bottom: 15px;
+    }
+    
+    .problem-card p {
+      font-size: 1rem;
+      opacity: 0.7;
+      line-height: 1.7;
+    }
+    
+    /* ========== OPPORTUNITY ========== */
+    .opportunity {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 40px;
+    }
+    
+    .opportunity-content {
+      max-width: 900px;
+    }
+    
+    .opportunity h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.2;
+      margin-bottom: 40px;
+      opacity: 0;
+    }
+    
+    .opportunity h2 em {
+      color: var(--gold);
+      font-style: italic;
+    }
+    
+    .opportunity-traits {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 60px;
+    }
+    
+    .trait {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      padding: 15px 30px;
+      border: 1px solid rgba(193, 154, 107, 0.3);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    /* ========== DIRECTION SECTIONS ========== */
+    .direction {
+      padding: 0;
+    }
+    
+    .direction-header {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px;
+      position: relative;
+    }
+    
+    .direction-number {
+      font-size: clamp(8rem, 20vw, 16rem);
+      font-weight: 100;
+      color: var(--gold);
+      opacity: 0.15;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+    }
+    
+    .direction-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+    }
+    
+    .direction-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 30px;
+      opacity: 0;
+    }
+    
+    .direction-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    
+    .direction-tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--gold);
+      margin-bottom: 40px;
+      opacity: 0;
+    }
+    
+    .direction-description {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      max-width: 600px;
+      opacity: 0;
+    }
+    
+    /* ========== MOODBOARD ========== */
+    .moodboard {
+      padding: 80px 40px;
+      background: rgba(0,0,0,0.3);
+    }
+    
+    .moodboard-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    
+    .moodboard-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    @media (max-width: 1200px) {
+      .moodboard-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    
+    @media (max-width: 800px) {
+      .moodboard-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    
+    .moodboard-item {
+      aspect-ratio: 1;
+      overflow: hidden;
+      position: relative;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    
+    .moodboard-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(40%);
+      transition: all 0.5s ease;
+    }
+    
+    .moodboard-item:hover img {
+      filter: grayscale(0%);
+      transform: scale(1.05);
+    }
+    
+    .moodboard-item.wide {
+      grid-column: span 2;
+      aspect-ratio: 2/1;
+    }
+    
+    .moodboard-item.tall {
+      grid-row: span 2;
+      aspect-ratio: 1/2;
+    }
+    
+    .moodboard-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transform: translateY(100%);
+      transition: transform 0.3s;
+    }
+    
+    .moodboard-item:hover .moodboard-caption {
+      transform: translateY(0);
+    }
+    
+    /* ========== CHARACTERISTICS ========== */
+    .characteristics {
+      padding: 100px 40px;
+    }
+    
+    .characteristics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .char-item {
+      padding: 40px;
+      border: 1px solid rgba(193, 154, 107, 0.2);
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    
+    .char-item h4 {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 15px;
+    }
+    
+    .char-item p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+    
+    /* ========== APPLICATION EXAMPLES ========== */
+    .applications {
+      padding: 100px 40px;
+      background: rgba(255,255,255,0.03);
+    }
+    
+    .applications-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    
+    .applications-header h3 {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    
+    .applications-header p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.5rem;
+    }
+    
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    @media (max-width: 900px) {
+      .app-grid { grid-template-columns: 1fr; }
+    }
+    
+    .app-card {
+      background: var(--tehom);
+      border: 1px solid rgba(193, 154, 107, 0.2);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    
+    .app-card-image {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, rgba(193,154,107,0.1), rgba(26,22,18,0.5));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .app-card-mockup {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+    
+    .app-card-content {
+      padding: 30px;
+    }
+    
+    .app-card h4 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+    
+    .app-card p {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      line-height: 1.6;
+    }
+    
+    /* ========== TYPOGRAPHY SHOWCASE ========== */
+    .typography {
+      padding: 120px 40px;
+      text-align: center;
+    }
+    
+    .type-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 60px;
+    }
+    
+    .type-display {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem, 10vw, 8rem);
+      line-height: 1.1;
+      margin-bottom: 60px;
+      opacity: 0;
+    }
+    
+    .type-body {
+      font-size: 1.25rem;
+      max-width: 680px;
+      margin: 0 auto 60px;
+      line-height: 1.8;
+      opacity: 0;
+    }
+    
+    .type-hebrew {
+      font-size: 4rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+      opacity: 0;
+    }
+    
+    .type-transliteration {
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      opacity: 0.5;
+    }
+    
+    /* ========== COLOR PALETTE ========== */
+    .palette {
+      padding: 100px 40px;
+    }
+    
+    .palette-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 60px;
+      text-align: center;
+    }
+    
+    .palette-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .color-swatch {
+      width: 150px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .color-box {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .color-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .color-hex {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      opacity: 0.5;
+    }
+    
+    /* ========== DIRECTION 2 SPECIFIC ========== */
+    .direction-2 {
+      background: var(--scroll);
+      color: var(--tehom);
+    }
+    
+    .direction-2 .direction-number { color: var(--burgundy); }
+    .direction-2 .direction-label { color: var(--burgundy); }
+    .direction-2 .direction-tagline { color: var(--burgundy); }
+    .direction-2 .char-item { border-color: rgba(107, 44, 44, 0.2); }
+    .direction-2 .char-item h4 { color: var(--burgundy); }
+    .direction-2 .moodboard { background: rgba(0,0,0,0.05); }
+    .direction-2 .type-label { color: var(--burgundy); }
+    .direction-2 .palette-label { color: var(--burgundy); }
+    .direction-2 .type-hebrew { color: var(--burgundy); }
+    
+    /* ========== DIRECTION 3 SPECIFIC ========== */
+    .direction-3 .direction-number { color: var(--shalom); }
+    .direction-3 .direction-label { color: var(--shalom); }
+    .direction-3 .direction-tagline { color: var(--shalom); }
+    .direction-3 .char-item h4 { color: var(--shalom); }
+    .direction-3 .type-label { color: var(--shalom); }
+    .direction-3 .palette-label { color: var(--shalom); }
+    .direction-3 .type-hebrew { color: var(--shalom); }
+    
+    /* ========== RECOMMENDATION ========== */
+    .recommendation {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gold);
+      color: var(--tehom);
+      text-align: center;
+      padding: 80px 40px;
+    }
+    
+    .recommendation-content {
+      max-width: 900px;
+    }
+    
+    .recommendation h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      margin-bottom: 40px;
+      opacity: 0;
+    }
+    
+    .recommendation-layers {
+      margin: 60px 0;
+    }
+    
+    .layer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 25px;
+      margin-bottom: 15px;
+      background: rgba(26, 22, 18, 0.1);
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    
+    .layer-name {
+      font-weight: 600;
+      min-width: 200px;
+      text-align: right;
+    }
+    
+    .layer-arrow {
+      font-size: 1.5rem;
+    }
+    
+    .layer-role {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      min-width: 200px;
+      text-align: left;
+    }
+    
+    .recommendation-tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.75rem;
+      margin-top: 60px;
+      opacity: 0;
+    }
+    
+    /* ========== CLOSING ========== */
+    .closing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 40px;
+    }
+    
+    .closing h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.2;
+      margin-bottom: 60px;
+      opacity: 0;
+    }
+    
+    .closing-cta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .cta-button {
+      padding: 20px 40px;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      opacity: 0;
+    }
+    
+    .cta-button:hover {
+      background: var(--gold);
+      color: var(--tehom);
+    }
+    
+    .cta-button.primary {
+      background: var(--gold);
+      color: var(--tehom);
+    }
+    
+    .cta-button.primary:hover {
+      background: transparent;
+      color: var(--gold);
+    }
+    
+    /* ========== FOOTER ========== */
+    footer {
+      padding: 60px 40px;
+      text-align: center;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.3;
+      border-top: 1px solid rgba(193, 154, 107, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar"></div>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" data-section="0">
+    <p class="hero-label">Creative Direction Pitch</p>
+    <h1>EUONGELION</h1>
+    <p class="hero-tagline">"Three visual directions. One mission.<br>Wake people up to the miraculous."</p>
+    <div class="scroll-cta">
+      <span>Scroll to begin</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ==================== THE PROBLEM ==================== -->
+  <section class="problem" data-section="1">
+    <div class="container">
+      <div class="problem-intro">
+        <h2>The Problem With<br>Christian Design</h2>
+        <p>Two modes. Both broken. Both repelling the people who need the message most.</p>
+      </div>
+      
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="number">01</div>
+          <h3>Stale Cathedral</h3>
+          <p>Dusty. Distant. Trapped in 1650. Icons that feel like museum artifacts, not living truth. Beautiful — but dead.</p>
+        </div>
+        
+        <div class="problem-card">
+          <div class="number">02</div>
+          <h3>Cringe Contemporary</h3>
+          <p>Lens flares. Stock photos of raised hands. Papyrus font. Trying so hard to be relevant that it becomes irrelevant.</p>
+        </div>
+        
+        <div class="problem-card">
+          <div class="number">03</div>
+          <h3>The Result</h3>
+          <p>Design that speaks to no one. The unchurched see amateur hour. The artistic see pandering. The seekers scroll past.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== THE OPPORTUNITY ==================== -->
+  <section class="opportunity" data-section="2">
+    <div class="opportunity-content">
+      <h2>What if the Gospel<br>looked like it <em>felt</em>?</h2>
+      <div class="opportunity-traits">
+        <div class="trait">Ancient</div>
+        <div class="trait">Urgent</div>
+        <div class="trait">Beautiful</div>
+        <div class="trait">Uncomfortable</div>
+        <div class="trait">True</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DIRECTION 01: SACRED MINIMALISM ==================== -->
+  <section class="direction direction-1" data-section="3">
+    <div class="direction-header">
+      <div class="direction-number">01</div>
+      <div class="direction-content">
+        <p class="direction-label">Direction One</p>
+        <h2 class="direction-title">Sacred Minimalism</h2>
+        <p class="direction-tagline">"Museum catalog meets illuminated manuscript"</p>
+        <p class="direction-description">
+          Clean geometric forms floating in generous negative space. Subtle gold leaf textures catching light like ancient icons. A limited palette that feels both contemporary and eternal. This direction says: <strong>"The Gospel is sophisticated. It belongs in the Tate Modern AND the catacombs."</strong>
+        </p>
+      </div>
+    </div>
+    
+    <div class="moodboard">
+      <p class="moodboard-label">Visual Moodboard</p>
+      <div class="moodboard-grid">
+        <div class="moodboard-item wide">
+          <img src="reference-images/iso50.jpg" alt="ISO50">
+          <div class="moodboard-caption">ISO50 / Scott Hansen</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/makoto-fujimura.jpg" alt="Makoto Fujimura">
+          <div class="moodboard-caption">Makoto Fujimura</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/tom-gauld.jpg" alt="Tom Gauld">
+          <div class="moodboard-caption">Tom Gauld</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/holographik/06-typography-layouts.png" alt="Typography">
+          <div class="moodboard-caption">Holographik</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/holographik/03-open-works.png" alt="Open Works">
+          <div class="moodboard-caption">Holographik</div>
+        </div>
+        <div class="moodboard-item wide">
+          <img src="reference-images/holographik/01-slush-brand.png" alt="Slush Brand">
+          <div class="moodboard-caption">Holographik / Slush</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/geoff-mcfetridge.jpg" alt="Geoff McFetridge">
+          <div class="moodboard-caption">Geoff McFetridge</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/ty-mattson.jpg" alt="Ty Mattson">
+          <div class="moodboard-caption">Ty Mattson</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="characteristics">
+      <div class="characteristics-grid">
+        <div class="char-item">
+          <h4>Form</h4>
+          <p>Geometric abstraction over literal imagery. Shapes that suggest rather than depict. The sacred geometry of creation.</p>
+        </div>
+        <div class="char-item">
+          <h4>Color</h4>
+          <p>Limited palette — 3-4 colors maximum. Tehom black, scroll white, gold as sacred accent. Restraint as reverence.</p>
+        </div>
+        <div class="char-item">
+          <h4>Typography</h4>
+          <p>Type as architecture. Confident sans-serif with generous tracking. Hebrew isolated and elevated.</p>
+        </div>
+        <div class="char-item">
+          <h4>Space</h4>
+          <p>Extreme negative space. Sabbath rest in visual form. Let the Word breathe. Less is holy.</p>
+        </div>
+        <div class="char-item">
+          <h4>Texture</h4>
+          <p>Subtle gold leaf fragments. Paper grain. The tactile memory of illuminated manuscripts.</p>
+        </div>
+        <div class="char-item">
+          <h4>Mood</h4>
+          <p>Kinfolk magazine if it found Jesus. A gallery exhibition catalog. Quiet confidence.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="applications">
+      <div class="applications-header">
+        <h3>Applied to EUONGELION</h3>
+        <p>How this direction lives on the platform</p>
+      </div>
+      <div class="app-grid">
+        <div class="app-card">
+          <div class="app-card-image">
+            <div class="app-card-mockup">01</div>
+          </div>
+          <div class="app-card-content">
+            <h4>Day Number Screens</h4>
+            <p>Massive thin-weight numerals. Single color. The number becomes meditation.</p>
+          </div>
+        </div>
+        <div class="app-card">
+          <div class="app-card-image">
+            <div class="app-card-mockup" style="font-size: 3rem;">חֶסֶד</div>
+          </div>
+          <div class="app-card-content">
+            <h4>Hebrew Word Cards</h4>
+            <p>Isolated terms on gold backgrounds. Sacred language given sacred space.</p>
+          </div>
+        </div>
+        <div class="app-card">
+          <div class="app-card-image">
+            <div class="app-card-mockup" style="font-size: 1rem; max-width: 80%;">"When fear is your teacher, it assigns you gods you can control."</div>
+          </div>
+          <div class="app-card-content">
+            <h4>Pull Quotes</h4>
+            <p>Bold typography on expansive white. The words become the image.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="typography">
+      <p class="type-label">Typography System</p>
+      <div class="type-display">The Kingdom<br>Is At Hand</div>
+      <p class="type-body">We live in apocalyptic times. Political violence. Economic collapse. 43% more anxious than last year. The ground beneath us is shaking. But beneath the shaking — bedrock.</p>
+      <div class="type-hebrew">רוּחַ</div>
+      <p class="type-transliteration">[ruach] — Spirit, Wind, Breath</p>
+    </div>
+    
+    <div class="palette">
+      <p class="palette-label">Color Palette</p>
+      <div class="palette-grid">
+        <div class="color-swatch">
+          <div class="color-box" style="background: #1A1612;"></div>
+          <p class="color-name">Tehom</p>
+          <p class="color-hex">#1A1612</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #F7F3ED;"></div>
+          <p class="color-name">Scroll</p>
+          <p class="color-hex">#F7F3ED</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #C19A6B;"></div>
+          <p class="color-name">God is Gold</p>
+          <p class="color-hex">#C19A6B</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DIRECTION 02: HOLY GRIT ==================== -->
+  <section class="direction direction-2" data-section="4">
+    <div class="direction-header">
+      <div class="direction-number">02</div>
+      <div class="direction-content">
+        <p class="direction-label">Direction Two</p>
+        <h2 class="direction-title">Holy Grit</h2>
+        <p class="direction-tagline">"Revival tent meets independent press"</p>
+        <p class="direction-description">
+          Risograph textures. Screen-print imperfection. The feeling of finding religious pamphlets in your grandmother's drawer — but designed by someone who worked at Criterion Collection. This direction says: <strong>"Faith is tactile. It gets its hands dirty. It has texture you can feel."</strong>
+        </p>
+      </div>
+    </div>
+    
+    <div class="moodboard">
+      <p class="moodboard-label">Visual Moodboard</p>
+      <div class="moodboard-grid">
+        <div class="moodboard-item">
+          <img src="reference-images/true-grit.jpg" alt="True Grit Texture">
+          <div class="moodboard-caption">True Grit Texture Supply</div>
+        </div>
+        <div class="moodboard-item wide">
+          <img src="reference-images/aesthetic-apparatus.jpg" alt="Aesthetic Apparatus">
+          <div class="moodboard-caption">Aesthetic Apparatus</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/hato-press.jpg" alt="Hato Press">
+          <div class="moodboard-caption">Hato Press</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/dkng.jpg" alt="DKNG">
+          <div class="moodboard-caption">DKNG Studios</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/draplin.jpg" alt="Draplin">
+          <div class="moodboard-caption">Draplin Design Co</div>
+        </div>
+        <div class="moodboard-item wide">
+          <img src="reference-images/methane.jpg" alt="Methane">
+          <div class="moodboard-caption">Methane Studios</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/invisible-creature.jpg" alt="Invisible Creature">
+          <div class="moodboard-caption">Invisible Creature</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/jon-contino.jpg" alt="Jon Contino">
+          <div class="moodboard-caption">Jon Contino</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="characteristics">
+      <div class="characteristics-grid">
+        <div class="char-item">
+          <h4>Texture</h4>
+          <p>Visible grain. Halftone dots. Paper fiber. Every surface has memory. The patina of use.</p>
+        </div>
+        <div class="char-item">
+          <h4>Color</h4>
+          <p>Limited spot colors — 2-3 inks like risograph. Overprint effects. Intentional registration errors.</p>
+        </div>
+        <div class="char-item">
+          <h4>Typography</h4>
+          <p>Bold. Condensed. Hand-drawn lettering. Letterpress impressions. Type that's been through something.</p>
+        </div>
+        <div class="char-item">
+          <h4>Imperfection</h4>
+          <p>Ink bleeds. Worn edges. The beauty of the handmade. Perfection isn't the goal — truth is.</p>
+        </div>
+        <div class="char-item">
+          <h4>Composition</h4>
+          <p>Poster-ready. Bold, immediate. Designed to be wheat-pasted on a wall in the village square.</p>
+        </div>
+        <div class="char-item">
+          <h4>Mood</h4>
+          <p>A24 film poster meets old Sunday school materials. Indie rock aesthetics meet ancient truth.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="applications">
+      <div class="applications-header">
+        <h3>Applied to EUONGELION</h3>
+        <p>How this direction lives on the platform</p>
+      </div>
+      <div class="app-grid">
+        <div class="app-card" style="background: var(--scroll); color: var(--tehom);">
+          <div class="app-card-image" style="background: linear-gradient(135deg, rgba(107,44,44,0.2), rgba(247,243,237,0.8));">
+            <div class="app-card-mockup" style="color: var(--burgundy);">WAKE UP</div>
+          </div>
+          <div class="app-card-content">
+            <h4>Series Headers</h4>
+            <p>Distressed type on textured backgrounds. Feels printed, not rendered. Urgent proclamation.</p>
+          </div>
+        </div>
+        <div class="app-card" style="background: var(--scroll); color: var(--tehom);">
+          <div class="app-card-image" style="background: repeating-linear-gradient(0deg, var(--burgundy) 0px, var(--burgundy) 2px, transparent 2px, transparent 4px);">
+            <div class="app-card-mockup" style="color: var(--scroll); text-shadow: 2px 2px 0 var(--tehom);">DAY 03</div>
+          </div>
+          <div class="app-card-content">
+            <h4>Day Markers</h4>
+            <p>Layered colors, halftone effects. Each day feels like a new broadside from the press.</p>
+          </div>
+        </div>
+        <div class="app-card" style="background: var(--scroll); color: var(--tehom);">
+          <div class="app-card-image" style="background: var(--tehom);">
+            <div class="app-card-mockup" style="color: var(--burgundy); font-family: serif; font-style: italic; font-size: 1rem;">"Seek first<br>the kingdom"</div>
+          </div>
+          <div class="app-card-content">
+            <h4>Share Cards</h4>
+            <p>Screen-print aesthetic quotes. Made to be saved, shared, stuck on a mirror.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="palette">
+      <p class="palette-label">Color Palette</p>
+      <div class="palette-grid">
+        <div class="color-swatch">
+          <div class="color-box" style="background: #1A1612;"></div>
+          <p class="color-name" style="color: var(--tehom);">Tehom</p>
+          <p class="color-hex" style="color: var(--tehom);">#1A1612</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #6B2C2C;"></div>
+          <p class="color-name" style="color: var(--tehom);">Burgundy</p>
+          <p class="color-hex" style="color: var(--tehom);">#6B2C2C</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #F7F3ED;"></div>
+          <p class="color-name" style="color: var(--tehom);">Scroll</p>
+          <p class="color-hex" style="color: var(--tehom);">#F7F3ED</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #6B6B4F;"></div>
+          <p class="color-name" style="color: var(--tehom);">Olive</p>
+          <p class="color-hex" style="color: var(--tehom);">#6B6B4F</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DIRECTION 03: ILLUSTRATED GOSPEL ==================== -->
+  <section class="direction direction-3" data-section="5">
+    <div class="direction-header">
+      <div class="direction-number">03</div>
+      <div class="direction-content">
+        <p class="direction-label">Direction Three</p>
+        <h2 class="direction-title">The Illustrated Gospel</h2>
+        <p class="direction-tagline">"New Yorker meets Sunday school"</p>
+        <p class="direction-description">
+          Editorial illustration that tells stories. Clever use of negative space. Simple shapes that carry enormous emotional weight. The kind of images that stop you mid-scroll and make you think. This direction says: <strong>"Scripture is story. Let's illustrate it like the narrative masterpiece it is."</strong>
+        </p>
+      </div>
+    </div>
+    
+    <div class="moodboard">
+      <p class="moodboard-label">Visual Moodboard</p>
+      <div class="moodboard-grid">
+        <div class="moodboard-item wide">
+          <img src="reference-images/brian-rea.jpg" alt="Brian Rea">
+          <div class="moodboard-caption">Brian Rea</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/olly-moss.jpg" alt="Olly Moss">
+          <div class="moodboard-caption">Olly Moss</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/geoff-mcfetridge.jpg" alt="Geoff McFetridge">
+          <div class="moodboard-caption">Geoff McFetridge</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/tom-gauld.jpg" alt="Tom Gauld">
+          <div class="moodboard-caption">Tom Gauld</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/doublenaut.jpg" alt="Doublenaut">
+          <div class="moodboard-caption">Doublenaut</div>
+        </div>
+        <div class="moodboard-item wide">
+          <img src="reference-images/mboa-art.jpg" alt="MBOA Art">
+          <div class="moodboard-caption">MBOA Art</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/perfectly-acceptable.jpg" alt="Perfectly Acceptable">
+          <div class="moodboard-caption">Perfectly Acceptable</div>
+        </div>
+        <div class="moodboard-item">
+          <img src="reference-images/holamaybe.jpg" alt="Holamaybe">
+          <div class="moodboard-caption">Holamaybe</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="characteristics">
+      <div class="characteristics-grid">
+        <div class="char-item">
+          <h4>Narrative</h4>
+          <p>Every image tells a story. Visual parables. The illustration is the first sentence of a sermon.</p>
+        </div>
+        <div class="char-item">
+          <h4>Negative Space</h4>
+          <p>What's not shown matters as much as what is. Clever reveals. The viewer completes the image.</p>
+        </div>
+        <div class="char-item">
+          <h4>Simplicity</h4>
+          <p>Reduced shapes. Flat color. Complexity comes from concept, not rendering. A child could draw it, but didn't.</p>
+        </div>
+        <div class="char-item">
+          <h4>Emotion</h4>
+          <p>Images that make you feel something. Not decoration — communication. Every stroke has purpose.</p>
+        </div>
+        <div class="char-item">
+          <h4>Wit</h4>
+          <p>Visual cleverness. Double meanings. The "aha" moment. Illustrations that reward attention.</p>
+        </div>
+        <div class="char-item">
+          <h4>Mood</h4>
+          <p>McSweeney's meets Ecclesiastes. Olly Moss movie posters for parables. Thoughtful, not precious.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="applications">
+      <div class="applications-header">
+        <h3>Applied to EUONGELION</h3>
+        <p>How this direction lives on the platform</p>
+      </div>
+      <div class="app-grid">
+        <div class="app-card">
+          <div class="app-card-image" style="background: var(--shalom);">
+            <div class="app-card-mockup" style="color: var(--scroll); font-size: 4rem;">🚪</div>
+          </div>
+          <div class="app-card-content">
+            <h4>Series Covers</h4>
+            <p>One conceptual illustration per series. The prodigal son as a silhouette in a doorway.</p>
+          </div>
+        </div>
+        <div class="app-card">
+          <div class="app-card-image" style="background: linear-gradient(180deg, var(--tehom) 50%, var(--shalom) 50%);">
+            <div class="app-card-mockup" style="color: var(--scroll);">↓</div>
+          </div>
+          <div class="app-card-content">
+            <h4>Story Modules</h4>
+            <p>Narrative illustrations for parables and teachings. Visual storytelling that complements text.</p>
+          </div>
+        </div>
+        <div class="app-card">
+          <div class="app-card-image" style="background: var(--scroll);">
+            <div class="app-card-mockup" style="color: var(--tehom); font-size: 5rem;">◐</div>
+          </div>
+          <div class="app-card-content">
+            <h4>Conceptual Headers</h4>
+            <p>Abstract symbols that grow in meaning. Day 1's shape evolves through Day 5.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="palette">
+      <p class="palette-label">Color Palette</p>
+      <div class="palette-grid">
+        <div class="color-swatch">
+          <div class="color-box" style="background: #1A1612;"></div>
+          <p class="color-name">Tehom</p>
+          <p class="color-hex">#1A1612</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #F7F3ED;"></div>
+          <p class="color-name">Scroll</p>
+          <p class="color-hex">#F7F3ED</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #4A5F6B;"></div>
+          <p class="color-name">Shalom Blue</p>
+          <p class="color-hex">#4A5F6B</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #C19A6B;"></div>
+          <p class="color-name">Gold Accent</p>
+          <p class="color-hex">#C19A6B</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== RECOMMENDATION ==================== -->
+  <section class="recommendation" data-section="6">
+    <div class="recommendation-content">
+      <h2>My Recommendation</h2>
+      <p style="font-size: 1.25rem; opacity: 0;">Don't pick one. <strong>Layer them.</strong></p>
+      
+      <div class="recommendation-layers">
+        <div class="layer">
+          <span class="layer-name">Sacred Minimalism</span>
+          <span class="layer-arrow">→</span>
+          <span class="layer-role">The Foundation</span>
+        </div>
+        <div class="layer">
+          <span class="layer-name">Holy Grit</span>
+          <span class="layer-arrow">→</span>
+          <span class="layer-role">The Texture</span>
+        </div>
+        <div class="layer">
+          <span class="layer-name">Illustrated Gospel</span>
+          <span class="layer-arrow">→</span>
+          <span class="layer-role">The Story Beats</span>
+        </div>
+      </div>
+      
+      <p class="recommendation-tagline">"A visual language as layered as Scripture itself."</p>
+    </div>
+  </section>
+
+  <!-- ==================== CLOSING ==================== -->
+  <section class="closing" data-section="7">
+    <h2>Which direction<br>wakes <em style="color: var(--gold);">you</em> up?</h2>
+    <div class="closing-cta">
+      <a href="#" class="cta-button">Direction 01</a>
+      <a href="#" class="cta-button">Direction 02</a>
+      <a href="#" class="cta-button">Direction 03</a>
+      <a href="#" class="cta-button primary">All Three</a>
+    </div>
+  </section>
+
+  <footer>
+    EUONGELION Visual Direction Pitch — January 2026 — Prepared by Milos
+  </footer>
+
+  <script>
+    // Register ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Progress bar
+    gsap.to('.progress-bar', {
+      width: '100%',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.3
+      }
+    });
+    
+    // Hero animations
+    gsap.to('.hero h1', {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      delay: 0.3,
+      ease: 'power3.out'
+    });
+    
+    gsap.to('.hero-tagline', {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      delay: 0.6,
+      ease: 'power3.out'
+    });
+    
+    gsap.to('.scroll-cta', {
+      opacity: 1,
+      duration: 1,
+      delay: 1.2
+    });
+    
+    // Problem cards
+    gsap.utils.toArray('.problem-card').forEach((card, i) => {
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: i * 0.2,
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 80%'
+        }
+      });
+    });
+    
+    // Opportunity section
+    gsap.to('.opportunity h2', {
+      opacity: 1,
+      duration: 1,
+      scrollTrigger: {
+        trigger: '.opportunity',
+        start: 'top 60%'
+      }
+    });
+    
+    gsap.utils.toArray('.trait').forEach((trait, i) => {
+      gsap.to(trait, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        delay: 0.3 + i * 0.1,
+        scrollTrigger: {
+          trigger: '.opportunity',
+          start: 'top 50%'
+        }
+      });
+    });
+    
+    // Direction headers
+    gsap.utils.toArray('.direction-header').forEach(header => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: header,
+          start: 'top 60%'
+        }
+      });
+      
+      tl.to(header.querySelector('.direction-label'), { opacity: 1, duration: 0.5 })
+        .to(header.querySelector('.direction-title'), { opacity: 1, x: 0, duration: 0.8 }, '-=0.3')
+        .to(header.querySelector('.direction-tagline'), { opacity: 1, duration: 0.6 }, '-=0.4')
+        .to(header.querySelector('.direction-description'), { opacity: 1, duration: 0.6 }, '-=0.3');
+    });
+    
+    // Moodboard items
+    gsap.utils.toArray('.moodboard-grid').forEach(grid => {
+      gsap.utils.toArray(grid.querySelectorAll('.moodboard-item')).forEach((item, i) => {
+        gsap.to(item, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          delay: i * 0.08,
+          scrollTrigger: {
+            trigger: grid,
+            start: 'top 70%'
+          }
+        });
+      });
+    });
+    
+    // Characteristics
+    gsap.utils.toArray('.char-item').forEach((item, i) => {
+      gsap.to(item, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        delay: i * 0.1,
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 85%'
+        }
+      });
+    });
+    
+    // Application cards
+    gsap.utils.toArray('.app-card').forEach((card, i) => {
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        delay: i * 0.15,
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 80%'
+        }
+      });
+    });
+    
+    // Typography showcase
+    gsap.utils.toArray('.typography').forEach(section => {
+      gsap.to(section.querySelector('.type-display'), {
+        opacity: 1,
+        duration: 1,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 60%'
+        }
+      });
+      
+      gsap.to(section.querySelector('.type-body'), {
+        opacity: 1,
+        duration: 0.8,
+        delay: 0.3,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 50%'
+        }
+      });
+      
+      gsap.to(section.querySelector('.type-hebrew'), {
+        opacity: 1,
+        duration: 0.8,
+        delay: 0.5,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 40%'
+        }
+      });
+    });
+    
+    // Color swatches
+    gsap.utils.toArray('.color-swatch').forEach((swatch, i) => {
+      gsap.to(swatch, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        delay: i * 0.1,
+        scrollTrigger: {
+          trigger: swatch.parentElement,
+          start: 'top 70%'
+        }
+      });
+    });
+    
+    // Recommendation
+    gsap.to('.recommendation h2', {
+      opacity: 1,
+      duration: 1,
+      scrollTrigger: {
+        trigger: '.recommendation',
+        start: 'top 60%'
+      }
+    });
+    
+    gsap.to('.recommendation p', {
+      opacity: 1,
+      duration: 0.8,
+      delay: 0.3,
+      scrollTrigger: {
+        trigger: '.recommendation',
+        start: 'top 50%'
+      }
+    });
+    
+    gsap.utils.toArray('.layer').forEach((layer, i) => {
+      gsap.to(layer, {
+        opacity: 1,
+        x: 0,
+        duration: 0.6,
+        delay: 0.5 + i * 0.2,
+        scrollTrigger: {
+          trigger: '.recommendation',
+          start: 'top 40%'
+        }
+      });
+    });
+    
+    gsap.to('.recommendation-tagline', {
+      opacity: 1,
+      duration: 1,
+      delay: 1.2,
+      scrollTrigger: {
+        trigger: '.recommendation',
+        start: 'top 30%'
+      }
+    });
+    
+    // Closing
+    gsap.to('.closing h2', {
+      opacity: 1,
+      duration: 1,
+      scrollTrigger: {
+        trigger: '.closing',
+        start: 'top 60%'
+      }
+    });
+    
+    gsap.utils.toArray('.cta-button').forEach((btn, i) => {
+      gsap.to(btn, {
+        opacity: 1,
+        duration: 0.5,
+        delay: 0.3 + i * 0.1,
+        scrollTrigger: {
+          trigger: '.closing',
+          start: 'top 50%'
+        }
+      });
+    });
+    
+    // Parallax on direction numbers
+    gsap.utils.toArray('.direction-number').forEach(num => {
+      gsap.to(num, {
+        y: -100,
+        scrollTrigger: {
+          trigger: num.parentElement,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
