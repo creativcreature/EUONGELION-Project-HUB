@@ -1,1220 +1,710 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MELT — AI Strategy Portal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --melt-blue-deep: #0A0A4F;
-            --melt-blue: #1A1A8F;
-            --melt-cyan: #00E5FF;
-            --melt-yellow: #FFD93D;
-            --melt-coral: #FF6B4A;
-            --melt-white: #FFFFFF;
-            --melt-gray: #8B8BA7;
-            --melt-light: #F0F4FF;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--melt-blue-deep);
-            color: var(--melt-white);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* ==================== NAVIGATION ==================== */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 1.5rem 4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(to bottom, rgba(10, 10, 79, 0.98), transparent);
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--melt-cyan);
-            letter-spacing: -0.02em;
-        }
-
-        .logo span {
-            display: inline-block;
-            position: relative;
-        }
-
-        .logo span::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 4px;
-            height: 12px;
-            background: var(--melt-cyan);
-            border-radius: 0 0 4px 4px;
-            animation: drip 2s ease-in-out infinite;
-        }
-
-        @keyframes drip {
-            0%, 100% { height: 12px; opacity: 1; }
-            50% { height: 20px; opacity: 0.7; }
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-        }
-
-        .nav-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--melt-cyan);
-        }
-
-        /* ==================== HERO ==================== */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 8rem 4rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 255, 0.15) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
-        .hero-tag {
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--melt-cyan);
-            margin-bottom: 2rem;
-            opacity: 0;
-            animation: fadeUp 0.8s ease forwards 0.2s;
-        }
-
-        .hero h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 700;
-            line-height: 1.05;
-            letter-spacing: -0.03em;
-            max-width: 900px;
-            margin-bottom: 2rem;
-            opacity: 0;
-            animation: fadeUp 0.8s ease forwards 0.4s;
-        }
-
-        .hero h1 .highlight {
-            background: linear-gradient(135deg, var(--melt-cyan), var(--melt-yellow));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-quote {
-            font-size: 1.4rem;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 600px;
-            line-height: 1.7;
-            opacity: 0;
-            animation: fadeUp 0.8s ease forwards 0.6s;
-        }
-
-        .hero-quote strong {
-            color: var(--melt-white);
-            font-weight: 500;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            opacity: 0;
-            animation: fadeUp 0.8s ease forwards 1s;
-        }
-
-        .scroll-indicator span {
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .scroll-indicator .arrow {
-            width: 24px;
-            height: 24px;
-            border-right: 2px solid var(--melt-cyan);
-            border-bottom: 2px solid var(--melt-cyan);
-            transform: rotate(45deg);
-            animation: bounce 2s ease infinite;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(45deg); }
-            40% { transform: translateY(-10px) rotate(45deg); }
-            60% { transform: translateY(-5px) rotate(45deg); }
-        }
-
-        /* ==================== SECTIONS ==================== */
-        section {
-            padding: 8rem 4rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            color: var(--melt-cyan);
-            margin-bottom: 1rem;
-            opacity: 0.8;
-        }
-
-        .section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 600px;
-            margin-bottom: 4rem;
-        }
-
-        /* ==================== PRESENTATION AREA ==================== */
-        #presentation {
-            background: linear-gradient(180deg, var(--melt-blue-deep) 0%, rgba(26, 26, 143, 0.3) 50%, var(--melt-blue-deep) 100%);
-        }
-
-        .pitch-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .pitch-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .pitch-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(0, 229, 255, 0.3);
-            transform: translateY(-5px);
-        }
-
-        .pitch-card.recommended {
-            border-color: var(--melt-cyan);
-            background: rgba(0, 229, 255, 0.05);
-        }
-
-        .pitch-card.recommended::before {
-            content: '★ RECOMMENDED';
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--melt-cyan);
-            color: var(--melt-blue-deep);
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            padding: 0.5rem 1rem;
-            border-radius: 0 16px 0 16px;
-        }
-
-        .pitch-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 4rem;
-            font-weight: 700;
-            color: rgba(0, 229, 255, 0.15);
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
-
-        .pitch-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .pitch-concept {
-            font-size: 0.9rem;
-            color: var(--melt-cyan);
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-        }
-
-        .pitch-steps {
-            list-style: none;
-            margin-bottom: 1.5rem;
-        }
-
-        .pitch-steps li {
-            padding: 0.6rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.95rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .pitch-steps li:last-child {
-            border-bottom: none;
-        }
-
-        .pitch-steps li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--melt-cyan);
-        }
-
-        .pitch-why {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-style: italic;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        /* ==================== AI TOOLS SECTION ==================== */
-        .ai-tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
-        }
-
-        .tool-category {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
-            padding: 2rem;
-        }
-
-        .tool-category h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--melt-yellow);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 1.5rem;
-        }
-
-        .tool-list {
-            list-style: none;
-        }
-
-        .tool-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .tool-list li:last-child {
-            border-bottom: none;
-        }
-
-        .tool-name {
-            font-weight: 500;
-        }
-
-        .tool-price {
-            font-size: 0.85rem;
-            color: var(--melt-cyan);
-        }
-
-        /* ==================== RECOMMENDATION BOX ==================== */
-        .recommendation-box {
-            background: linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(255, 217, 61, 0.05) 100%);
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            border-radius: 20px;
-            padding: 3rem;
-            margin-top: 4rem;
-            text-align: center;
-        }
-
-        .recommendation-box h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .recommendation-box .cost {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--melt-cyan);
-            margin: 1.5rem 0;
-        }
-
-        .recommendation-box .cost span {
-            font-size: 1rem;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .stack-pills {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-
-        .stack-pill {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        /* ==================== SITE SWITCHER ==================== */
-        #sites {
-            text-align: center;
-            background: var(--melt-blue-deep);
-        }
-
-        .switcher-container {
-            margin: 4rem 0;
-        }
-
-        .switcher-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 60px;
-            padding: 0.5rem;
-            max-width: 600px;
-            margin: 0 auto 3rem;
-        }
-
-        .switcher-tab {
-            flex: 1;
-            padding: 1rem 2rem;
-            border: none;
-            background: transparent;
-            color: rgba(255, 255, 255, 0.6);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-
-        .switcher-tab:hover {
-            color: var(--melt-white);
-        }
-
-        .switcher-tab.active {
-            background: var(--melt-cyan);
-            color: var(--melt-blue-deep);
-        }
-
-        .iframe-container {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .iframe-header {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .iframe-dots {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .iframe-dots span {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .iframe-dots span:nth-child(1) { background: #FF5F57; }
-        .iframe-dots span:nth-child(2) { background: #FFBD2E; }
-        .iframe-dots span:nth-child(3) { background: #28CA41; }
-
-        .iframe-url {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-family: monospace;
-        }
-
-        .site-iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-            background: #fff;
-            transition: opacity 0.3s ease;
-        }
-
-        .open-external {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-            padding: 1rem 2rem;
-            background: transparent;
-            border: 2px solid var(--melt-cyan);
-            color: var(--melt-cyan);
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .open-external:hover {
-            background: var(--melt-cyan);
-            color: var(--melt-blue-deep);
-        }
-
-        /* ==================== WOW MOMENT ==================== */
-        #wow {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            background: radial-gradient(ellipse at 50% 50%, rgba(26, 26, 143, 0.5) 0%, var(--melt-blue-deep) 70%);
-        }
-
-        .wow-trigger {
-            padding: 1.5rem 4rem;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: transparent;
-            border: 3px solid var(--melt-cyan);
-            color: var(--melt-cyan);
-            border-radius: 60px;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            z-index: 10;
-        }
-
-        .wow-trigger:hover {
-            background: var(--melt-cyan);
-            color: var(--melt-blue-deep);
-            transform: scale(1.05);
-            box-shadow: 0 0 60px rgba(0, 229, 255, 0.4);
-        }
-
-        .wow-trigger.activated {
-            opacity: 0;
-            transform: scale(0);
-            pointer-events: none;
-        }
-
-        /* The Melt Experience */
-        .melt-experience {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--melt-blue-deep);
-            z-index: 9999;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .melt-experience.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .melt-logo-reveal {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .melt-svg {
-            width: 300px;
-            height: 200px;
-        }
-
-        .melt-letter {
-            fill: none;
-            stroke: var(--melt-cyan);
-            stroke-width: 8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-        }
-
-        .melt-experience.active .melt-letter {
-            animation: drawLetter 2s ease forwards;
-        }
-
-        @keyframes drawLetter {
-            to { stroke-dashoffset: 0; }
-        }
-
-        .particle-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .stats-reveal {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 3rem;
-            margin-top: 4rem;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .melt-experience.active .stats-reveal {
-            animation: fadeUp 1s ease forwards 2.5s;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 4rem;
-            font-weight: 700;
-            line-height: 1;
-            background: linear-gradient(135deg, var(--melt-cyan), var(--melt-yellow));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 0.5rem;
-        }
-
-        .tagline-reveal {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3rem;
-            font-weight: 700;
-            margin-top: 4rem;
-            opacity: 0;
-        }
-
-        .melt-experience.active .tagline-reveal {
-            animation: fadeUp 1s ease forwards 3.5s;
-        }
-
-        .close-experience {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
-        }
-
-        .melt-experience.active .close-experience {
-            animation: fadeUp 0.5s ease forwards 4s;
-        }
-
-        .close-experience:hover {
-            border-color: var(--melt-cyan);
-            color: var(--melt-cyan);
-        }
-
-        /* ==================== TALKING POINTS ==================== */
-        .talking-points {
-            background: rgba(255, 217, 61, 0.05);
-            border: 1px solid rgba(255, 217, 61, 0.2);
-            border-radius: 16px;
-            padding: 2.5rem;
-            margin-top: 4rem;
-        }
-
-        .talking-points h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem;
-            color: var(--melt-yellow);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .talking-points h3::before {
-            content: '💡';
-        }
-
-        .talking-points ul {
-            list-style: none;
-            display: grid;
-            gap: 1rem;
-        }
-
-        .talking-points li {
-            padding: 1rem 1.5rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            font-size: 1rem;
-        }
-
-        .talking-points strong {
-            color: var(--melt-cyan);
-        }
-
-        /* ==================== FOOTER ==================== */
-        footer {
-            padding: 4rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        footer p {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-        }
-
-        footer .melt-footer-logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--melt-cyan);
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
-
-        /* ==================== RESPONSIVE ==================== */
-        @media (max-width: 768px) {
-            nav {
-                padding: 1rem 1.5rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            section {
-                padding: 4rem 1.5rem;
-            }
-
-            .pitch-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .switcher-tabs {
-                flex-direction: column;
-                border-radius: 16px;
-            }
-
-            .stats-reveal {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
-            }
-
-            .stat-number {
-                font-size: 2.5rem;
-            }
-
-            .tagline-reveal {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MELT — AI Strategy Dashboard</title>
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #fafafa;
+      --gold: #c9a227;
+      --gray: #888;
+      --light: #f5f5f5;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    section {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      padding: 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .light {
+      background: var(--white);
+      color: var(--black);
+    }
+    
+    .gold-accent {
+      background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%);
+    }
+    
+    h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 200;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    
+    h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      color: var(--gold);
+    }
+    
+    .section-number {
+      font-size: 0.875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+    
+    .subtitle {
+      font-size: 1.25rem;
+      color: var(--gray);
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+    
+    .quote {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-style: italic;
+      color: var(--gold);
+      border-left: 3px solid var(--gold);
+      padding-left: 2rem;
+      margin: 2rem 0;
+      max-width: 700px;
+    }
+    
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+    
+    .light .card {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+    }
+    
+    .card-number {
+      font-size: 3rem;
+      font-weight: 100;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      background: rgba(201, 162, 39, 0.2);
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    
+    .recommended {
+      border: 2px solid var(--gold);
+      position: relative;
+    }
+    
+    .recommended::before {
+      content: '★ RECOMMENDED';
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+    }
+    
+    .steps {
+      list-style: none;
+      margin-top: 1rem;
+    }
+    
+    .steps li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+    }
+    
+    .light .steps li {
+      color: rgba(0,0,0,0.7);
+    }
+    
+    .steps li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+    
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .tool {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    
+    .tool-name {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .tool-price {
+      color: var(--gold);
+      font-size: 0.9rem;
+    }
+    
+    .tool-purpose {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-top: 0.5rem;
+    }
+    
+    .total-box {
+      background: linear-gradient(135deg, var(--gold) 0%, #d4af37 100%);
+      color: var(--black);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      margin-top: 2rem;
+      max-width: 400px;
+    }
+    
+    .total-box .amount {
+      font-size: 3rem;
+      font-weight: 700;
+    }
+    
+    .qa-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .qa-item {
+      background: rgba(0,0,0,0.03);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    
+    .qa-item h4 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      color: var(--black);
+    }
+    
+    .qa-item p {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    .key-points {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .point {
+      padding: 1.5rem;
+      border-left: 3px solid var(--gold);
+      background: rgba(255,255,255,0.02);
+    }
+    
+    .point h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--gold);
+    }
+    
+    .point p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+    }
+    
+    .cta-section {
+      text-align: center;
+      background: linear-gradient(180deg, var(--black) 0%, #111 100%);
+    }
+    
+    .cta-section h2 {
+      margin-bottom: 1rem;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      margin: 3rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 200;
+      color: var(--gold);
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    /* Navigation */
+    .nav {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+    }
+    
+    .nav-dot {
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      margin: 12px 0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .nav-dot:hover, .nav-dot.active {
+      background: var(--gold);
+      transform: scale(1.3);
+    }
+    
+    /* Progress bar */
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--gold);
+      z-index: 200;
+      transition: width 0.3s ease;
+    }
+    
+    /* Keyboard hint */
+    .keyboard-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: var(--gray);
+      opacity: 0.5;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      section {
+        padding: 60px 30px;
+      }
+      
+      .nav {
+        right: 15px;
+      }
+      
+      .stats {
+        gap: 2rem;
+      }
+      
+      .grid-3, .qa-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    section > * {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <div class="logo"><span>melt</span></div>
-        <div class="nav-links">
-            <a href="#presentation">Strategy</a>
-            <a href="#sites">Demo Sites</a>
-            <a href="#wow">The Experience</a>
-        </div>
-    </nav>
 
-    <!-- ==================== HERO ==================== -->
-    <section class="hero">
-        <span class="hero-tag">AI Strategy Presentation</span>
-        <h1>Creating <span class="highlight">Moments</span><br>That Matter</h1>
-        <p class="hero-quote">"AI can create <strong>100 ideas in 10 minutes</strong>.<br>But it can't pull off the <strong>activation</strong>."</p>
-        <div class="scroll-indicator">
-            <span>Explore</span>
-            <div class="arrow"></div>
-        </div>
-    </section>
+  <div class="progress" id="progress"></div>
+  
+  <nav class="nav">
+    <span class="nav-dot active" data-section="0"></span>
+    <span class="nav-dot" data-section="1"></span>
+    <span class="nav-dot" data-section="2"></span>
+    <span class="nav-dot" data-section="3"></span>
+    <span class="nav-dot" data-section="4"></span>
+    <span class="nav-dot" data-section="5"></span>
+    <span class="nav-dot" data-section="6"></span>
+  </nav>
 
-    <!-- ==================== PRESENTATION AREA ==================== -->
-    <section id="presentation">
-        <span class="section-number">01 — STRATEGY</span>
-        <h2 class="section-title">Demo Approach Options</h2>
-        <p class="section-subtitle">Three ways to showcase AI capabilities. Each designed to demonstrate practical value for agency work.</p>
-
-        <div class="pitch-grid">
-            <!-- Pitch 1 -->
-            <div class="pitch-card">
-                <div class="pitch-number">01</div>
-                <h3 class="pitch-title">The Speed Round</h3>
-                <p class="pitch-concept">⚡ Raw speed, undeniable impact</p>
-                <ul class="pitch-steps">
-                    <li>Present a real brief from last week</li>
-                    <li>Start timer — AI generates 10 taglines (15 sec)</li>
-                    <li>Compare to traditional brainstorm (1 hour)</li>
-                    <li>Refine best 3 with AI iteration (30 sec)</li>
-                    <li>Output: Polished options, client-ready</li>
-                </ul>
-                <p class="pitch-why">Visceral impact. The stopwatch doesn't lie. Low risk, simple, reliable.</p>
-            </div>
-
-            <!-- Pitch 2 -->
-            <div class="pitch-card recommended">
-                <div class="pitch-number">02</div>
-                <h3 class="pitch-title">The Strategy Synthesizer</h3>
-                <p class="pitch-concept">🧠 Turn chaos into clarity</p>
-                <ul class="pitch-steps">
-                    <li>Show wall of CEO notes/screenshots</li>
-                    <li>"This is what we started with"</li>
-                    <li>AI extracts themes, conflicts, decisions</li>
-                    <li>Output: Clean strategic framework</li>
-                    <li>Bonus: Generate presentation outline</li>
-                </ul>
-                <p class="pitch-why">Solves a REAL pain — agencies drown in decks and notes. Shows strategic thinking.</p>
-            </div>
-
-            <!-- Pitch 3 -->
-            <div class="pitch-card">
-                <div class="pitch-number">03</div>
-                <h3 class="pitch-title">The Campaign Machine</h3>
-                <p class="pitch-concept">🎨 End-to-end concepting</p>
-                <ul class="pitch-steps">
-                    <li>Start: "Coca-Cola wants Final Four activation"</li>
-                    <li>AI generates 5 experience concepts (1 min)</li>
-                    <li>Pick one — AI expands full activation plan</li>
-                    <li>AI drafts social content for activation</li>
-                    <li>AI creates pitch presentation outline</li>
-                </ul>
-                <p class="pitch-why">Shows full workflow. Relevant to MELT's business. More moving parts = higher risk.</p>
-            </div>
-        </div>
-
-        <!-- AI Tools Recommendation -->
-        <span class="section-number" style="margin-top: 6rem; display: block;">02 — AI TOOLS</span>
-        <h2 class="section-title">The Essential Stack</h2>
-        <p class="section-subtitle">Recommended AI tools organized by use case. Start here, expand as needed.</p>
-
-        <div class="ai-tools-grid">
-            <div class="tool-category">
-                <h4>Content & Copy</h4>
-                <ul class="tool-list">
-                    <li><span class="tool-name">ChatGPT Pro</span><span class="tool-price">$20/mo</span></li>
-                    <li><span class="tool-name">Claude Pro</span><span class="tool-price">$20/mo</span></li>
-                    <li><span class="tool-name">Jasper</span><span class="tool-price">$49/mo</span></li>
-                </ul>
-            </div>
-            <div class="tool-category">
-                <h4>Visual & Design</h4>
-                <ul class="tool-list">
-                    <li><span class="tool-name">Midjourney</span><span class="tool-price">$30/mo</span></li>
-                    <li><span class="tool-name">Adobe Firefly</span><span class="tool-price">CC sub</span></li>
-                    <li><span class="tool-name">Canva Pro</span><span class="tool-price">$13/mo</span></li>
-                </ul>
-            </div>
-            <div class="tool-category">
-                <h4>Research</h4>
-                <ul class="tool-list">
-                    <li><span class="tool-name">Perplexity Pro</span><span class="tool-price">$20/mo</span></li>
-                    <li><span class="tool-name">SimilarWeb</span><span class="tool-price">Enterprise</span></li>
-                </ul>
-            </div>
-            <div class="tool-category">
-                <h4>Workflow</h4>
-                <ul class="tool-list">
-                    <li><span class="tool-name">Notion AI</span><span class="tool-price">$10/mo</span></li>
-                    <li><span class="tool-name">Zapier</span><span class="tool-price">$20/mo</span></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="recommendation-box">
-            <h3>Starter Stack Recommendation</h3>
-            <p style="color: rgba(255,255,255,0.7);">Covers 90% of daily AI needs</p>
-            <div class="cost">~$100<span>/month</span></div>
-            <div class="stack-pills">
-                <span class="stack-pill">ChatGPT</span>
-                <span class="stack-pill">Claude</span>
-                <span class="stack-pill">Midjourney</span>
-                <span class="stack-pill">Canva</span>
-                <span class="stack-pill">Perplexity</span>
-            </div>
-        </div>
-
-        <div class="talking-points">
-            <h3>Key Talking Points</h3>
-            <ul>
-                <li><strong>"AI is a multiplier, not a replacement"</strong> — Shows speed, but humans still drive strategy</li>
-                <li><strong>"The $100/month stack"</strong> — ChatGPT + Claude + Midjourney + Canva + Perplexity covers 90%</li>
-                <li><strong>"The real power is in workflows"</strong> — Connect tools together, build AI assistants that know MELT's brand</li>
-                <li><strong>"Experiential is ripe for AI"</strong> — AI photo booths, real-time personalization, content gen during events</li>
-                <li><strong>"First movers win"</strong> — Most agencies aren't using AI well yet. This is the competitive advantage.</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- ==================== SITE SWITCHER ==================== -->
-    <section id="sites">
-        <span class="section-number">03 — DEMO SITES</span>
-        <h2 class="section-title">Website Versions</h2>
-        <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">Compare the three MELT website approaches. Click to switch between versions.</p>
-
-        <div class="switcher-container">
-            <div class="switcher-tabs">
-                <button class="switcher-tab active" data-url="https://melt-v1.netlify.app">V1</button>
-                <button class="switcher-tab" data-url="https://melt-v2.netlify.app">V2</button>
-                <button class="switcher-tab" data-url="https://melt-capesite.netlify.app">Capes</button>
-            </div>
-
-            <div class="iframe-container">
-                <div class="iframe-header">
-                    <div class="iframe-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div class="iframe-url" id="current-url">melt-v1.netlify.app</div>
-                </div>
-                <iframe 
-                    id="site-frame" 
-                    class="site-iframe" 
-                    src="https://melt-v1.netlify.app"
-                    loading="lazy"
-                ></iframe>
-            </div>
-
-            <a href="https://melt-v1.netlify.app" id="external-link" target="_blank" class="open-external">
-                Open in New Tab →
-            </a>
-        </div>
-    </section>
-
-    <!-- ==================== WOW MOMENT ==================== -->
-    <section id="wow">
-        <span class="section-number">04 — THE MOMENT</span>
-        <h2 class="section-title" style="margin-bottom: 3rem;">Ready for Something<br>Unforgettable?</h2>
-        <button class="wow-trigger" onclick="triggerWow()">
-            Activate the Experience
-        </button>
-    </section>
-
-    <!-- THE WOW EXPERIENCE -->
-    <div class="melt-experience" id="melt-experience">
-        <button class="close-experience" onclick="closeExperience()">×</button>
-        
-        <div class="particle-container" id="particles"></div>
-        
-        <div class="melt-logo-reveal">
-            <svg class="melt-svg" viewBox="0 0 400 200">
-                <!-- M -->
-                <path class="melt-letter" d="M30 150 L30 50 L70 100 L110 50 L110 150" style="animation-delay: 0s"/>
-                <!-- E -->
-                <path class="melt-letter" d="M140 50 L140 150 M140 50 L180 50 M140 100 L170 100 M140 150 L180 150" style="animation-delay: 0.3s"/>
-                <!-- L -->
-                <path class="melt-letter" d="M210 50 L210 150 L260 150" style="animation-delay: 0.6s"/>
-                <!-- T -->
-                <path class="melt-letter" d="M280 50 L340 50 M310 50 L310 150" style="animation-delay: 0.9s"/>
-                <!-- Drip -->
-                <path class="melt-letter" d="M30 150 L30 180 Q30 195 40 195 Q50 195 50 180" style="animation-delay: 1.5s"/>
-            </svg>
-        </div>
-
-        <div class="stats-reveal">
-            <div class="stat-item">
-                <div class="stat-number" data-target="26">0</div>
-                <div class="stat-label">Years Strong</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" data-target="10000">0</div>
-                <div class="stat-label">Events Executed</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" data-target="10000">0</div>
-                <div class="stat-label">Sponsorships</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" data-target="20">0</div>
-                <div class="stat-label">Years with Coke</div>
-            </div>
-        </div>
-
-        <div class="tagline-reveal">Creating Moments That Matter</div>
+  <!-- HERO -->
+  <section id="hero" class="gold-accent">
+    <span class="section-number">MELT AI Strategy</span>
+    <h1>Creating Moments<br>That Matter</h1>
+    <p class="subtitle">A strategic framework for integrating AI into experiential marketing — amplifying creativity without replacing it.</p>
+    <div class="quote">
+      "AI can create 100 ideas in 10 minutes.<br>But it can't pull off the activation."
+      <span style="display:block;font-size:0.875rem;font-style:normal;margin-top:0.5rem;color:var(--gray);">— David Culbertson, Chief Creative Officer</span>
     </div>
+  </section>
 
-    <footer>
-        <div class="melt-footer-logo">melt</div>
-        <p>3535 Peachtree Rd NE, Suite 320, Atlanta, GA 30326</p>
-        <p style="margin-top: 0.5rem; color: rgba(255,255,255,0.3);">Sports • Entertainment • Food</p>
-    </footer>
+  <!-- CEO VISION -->
+  <section id="vision">
+    <span class="section-number">01 — The Vision</span>
+    <h2>What Vince Sees</h2>
+    <p class="subtitle">Key directives from the CEO, synthesized from 84 screenshots of team conversations.</p>
+    
+    <div class="key-points">
+      <div class="point">
+        <h4>Top Targets</h4>
+        <p>Chick-fil-A and Top Golf — active conversations. "The competition is fast and furious!"</p>
+      </div>
+      <div class="point">
+        <h4>Brand Consistency</h4>
+        <p>Capes deck = Website = LinkedIn = Social. "Clear, simple and consistent messaging."</p>
+      </div>
+      <div class="point">
+        <h4>Content Strategy</h4>
+        <p>7 pillars: NIL, event marketing, AI impact, internships, networking, podcasting, event security.</p>
+      </div>
+      <div class="point">
+        <h4>The Edge</h4>
+        <p>"For a boutique agency, we damn sure have the experts on board and the chops that most our size don't."</p>
+      </div>
+    </div>
+    
+    <div class="quote" style="margin-top:3rem;">
+      "My vision is to have our capes deck mirror/mimic our website and vice versa. For consistency."
+    </div>
+  </section>
 
-    <script>
-        // Site Switcher
-        const tabs = document.querySelectorAll('.switcher-tab');
-        const iframe = document.getElementById('site-frame');
-        const urlDisplay = document.getElementById('current-url');
-        const externalLink = document.getElementById('external-link');
+  <!-- DEMO OPTIONS -->
+  <section id="demos" class="light">
+    <span class="section-number" style="color:var(--black);">02 — Demo Approaches</span>
+    <h2>Three Ways to Show AI Value</h2>
+    <p class="subtitle" style="color:#555;">Each designed to demonstrate practical value for agency work. Pick one.</p>
+    
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-number">01</div>
+        <span class="card-tag">⚡ Low Risk</span>
+        <h3>The Speed Round</h3>
+        <p style="color:#666;font-size:0.9rem;">Raw speed, undeniable impact. The stopwatch doesn't lie.</p>
+        <ul class="steps">
+          <li>Present a real brief from last week</li>
+          <li>Timer starts — AI generates 10 taglines (15 sec)</li>
+          <li>Compare to traditional brainstorm (1 hour)</li>
+          <li>Refine best 3 with AI iteration (30 sec)</li>
+          <li>Output: Polished options, client-ready</li>
+        </ul>
+      </div>
+      
+      <div class="card recommended">
+        <div class="card-number">02</div>
+        <span class="card-tag">🧠 Medium Risk</span>
+        <h3>The Strategy Synthesizer</h3>
+        <p style="color:#666;font-size:0.9rem;">Turn chaos into clarity. Shows strategic thinking.</p>
+        <ul class="steps">
+          <li>Show wall of CEO notes/screenshots</li>
+          <li>"This is what we started with"</li>
+          <li>AI extracts themes, conflicts, decisions</li>
+          <li>Output: Clean strategic framework</li>
+          <li>Bonus: Generate presentation outline</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <div class="card-number">03</div>
+        <span class="card-tag">🎨 Higher Risk</span>
+        <h3>The Campaign Machine</h3>
+        <p style="color:#666;font-size:0.9rem;">End-to-end concepting. More moving parts.</p>
+        <ul class="steps">
+          <li>"Coca-Cola wants Final Four activation"</li>
+          <li>AI generates 5 experience concepts (1 min)</li>
+          <li>Pick one — AI expands full plan</li>
+          <li>AI drafts social content</li>
+          <li>AI creates pitch presentation outline</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                const url = tab.dataset.url;
-                iframe.style.opacity = '0';
-                
-                setTimeout(() => {
-                    iframe.src = url;
-                    urlDisplay.textContent = url.replace('https://', '');
-                    externalLink.href = url;
-                    iframe.style.opacity = '1';
-                }, 300);
-            });
-        });
+  <!-- AI STACK -->
+  <section id="stack">
+    <span class="section-number">03 — The Stack</span>
+    <h2>Recommended AI Tools</h2>
+    <p class="subtitle">The essential toolkit for agency AI integration. Start here, expand as needed.</p>
+    
+    <div class="tool-grid">
+      <div class="tool">
+        <div class="tool-name">Claude Team</div>
+        <div class="tool-price">$25/mo/seat</div>
+        <div class="tool-purpose">Writing, strategy, code, analysis</div>
+      </div>
+      <div class="tool">
+        <div class="tool-name">Claude Max</div>
+        <div class="tool-price">$100-200/mo</div>
+        <div class="tool-purpose">Power users, Claude Code</div>
+      </div>
+      <div class="tool">
+        <div class="tool-name">Midjourney Pro</div>
+        <div class="tool-price">$60/mo</div>
+        <div class="tool-purpose">Visual generation, Stealth Mode</div>
+      </div>
+      <div class="tool">
+        <div class="tool-name">Artlist Max</div>
+        <div class="tool-price">$40/mo</div>
+        <div class="tool-purpose">Video/audio stock + AI</div>
+      </div>
+      <div class="tool">
+        <div class="tool-name">Runway Pro</div>
+        <div class="tool-price">$28/mo</div>
+        <div class="tool-purpose">Video creation, Gen-4</div>
+      </div>
+      <div class="tool">
+        <div class="tool-name">Adobe CC</div>
+        <div class="tool-price">Current</div>
+        <div class="tool-purpose">Firefly AI included</div>
+      </div>
+    </div>
+    
+    <div class="total-box">
+      <div style="font-size:0.875rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">Monthly Investment</div>
+      <div class="amount">$325</div>
+      <div style="font-size:0.9rem;margin-top:0.5rem;">Bill back to clients when used heavily on projects</div>
+    </div>
+    
+    <p style="margin-top:2rem;font-size:0.875rem;color:var(--gray);">⚠️ Copyright Note: AI-generated art cannot be copyrighted unless edited in non-AI tools. Always finish in Adobe.</p>
+  </section>
 
-        // WOW Experience
-        function triggerWow() {
-            const btn = document.querySelector('.wow-trigger');
-            const experience = document.getElementById('melt-experience');
-            
-            btn.classList.add('activated');
-            
-            setTimeout(() => {
-                experience.classList.add('active');
-                createParticles();
-                setTimeout(animateStats, 2500);
-            }, 400);
+  <!-- KEY TALKING POINTS -->
+  <section id="points" class="light">
+    <span class="section-number" style="color:var(--black);">04 — Key Messages</span>
+    <h2>What to Say</h2>
+    <p class="subtitle" style="color:#555;">Core talking points for the AI conversation.</p>
+    
+    <div class="key-points">
+      <div class="point" style="background:rgba(0,0,0,0.03);">
+        <h4 style="color:var(--black);">AI = 80/20</h4>
+        <p style="color:#555;">"AI handles 80% of the first draft. The human 20% is where the magic happens — strategy, insight, refinement."</p>
+      </div>
+      <div class="point" style="background:rgba(0,0,0,0.03);">
+        <h4 style="color:var(--black);">Multiplier, Not Replacement</h4>
+        <p style="color:#555;">"One designer with AI does the work of three without it. We take on more clients, not fire people."</p>
+      </div>
+      <div class="point" style="background:rgba(0,0,0,0.03);">
+        <h4 style="color:var(--black);">First Movers Win</h4>
+        <p style="color:#555;">"Most agencies aren't using AI well yet. This is the competitive advantage — move now while others form committees."</p>
+      </div>
+      <div class="point" style="background:rgba(0,0,0,0.03);">
+        <h4 style="color:var(--black);">Experiential Is Ripe</h4>
+        <p style="color:#555;">"AI photo booths, real-time content generation, phygital experiences — the event space is transforming."</p>
+      </div>
+      <div class="point" style="background:rgba(0,0,0,0.03);">
+        <h4 style="color:var(--black);">Execution Is The Moat</h4>
+        <p style="color:#555;">"AI levels the ideation field. MELT's 25 years of execution expertise is still the differentiator."</p>
+      </div>
+      <div class="point" style="background:rgba(0,0,0,0.03);">
+        <h4 style="color:var(--black);">Always Verify</h4>
+        <p style="color:#555;">"AI makes stuff up sometimes. Great for ideas and drafts, not for facts. Human review is mandatory."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q&A PREP -->
+  <section id="qa">
+    <span class="section-number">05 — Q&A Prep</span>
+    <h2>Anticipate The Questions</h2>
+    <p class="subtitle">Common concerns and how to address them.</p>
+    
+    <div class="qa-grid" style="color:var(--white);">
+      <div class="qa-item" style="background:rgba(255,255,255,0.05);">
+        <h4 style="color:var(--gold);">"What about client data security?"</h4>
+        <p style="color:rgba(255,255,255,0.7);">ChatGPT and Claude have enterprise tiers that don't train on your data. Strip identifying info for day-to-day work. For truly confidential stuff, use enterprise versions or don't use AI.</p>
+      </div>
+      <div class="qa-item" style="background:rgba(255,255,255,0.05);">
+        <h4 style="color:var(--gold);">"Will this replace jobs?"</h4>
+        <p style="color:rgba(255,255,255,0.7);">No. It makes each person more productive. The people who get replaced refuse to learn. The people who learn become indispensable. Like when Photoshop came out.</p>
+      </div>
+      <div class="qa-item" style="background:rgba(255,255,255,0.05);">
+        <h4 style="color:var(--gold);">"How much time does this save?"</h4>
+        <p style="color:rgba(255,255,255,0.7);">Research that took 4-6 hours: 30 minutes. First drafts that took an hour: 5 minutes. Brainstorming 20 concepts: 10 minutes instead of a half-day meeting.</p>
+      </div>
+      <div class="qa-item" style="background:rgba(255,255,255,0.05);">
+        <h4 style="color:var(--gold);">"What about hallucinations?"</h4>
+        <p style="color:rgba(255,255,255,0.7);">Claude has the lowest rate at 17%. The rule: verify anything factual. AI is great for ideas, not facts. If it goes to a client, a human checks it.</p>
+      </div>
+      <div class="qa-item" style="background:rgba(255,255,255,0.05);">
+        <h4 style="color:var(--gold);">"What's the learning curve?"</h4>
+        <p style="color:rgba(255,255,255,0.7);">If you can write an email, you can use these tools. The skill is in prompting — being specific. A 30-minute lunch-and-learn gets everyone comfortable.</p>
+      </div>
+      <div class="qa-item" style="background:rgba(255,255,255,0.05);">
+        <h4 style="color:var(--gold);">"What's the risk if we don't adopt?"</h4>
+        <p style="color:rgba(255,255,255,0.7);">Speed becomes the differentiator. If a competitor turns around concepts in 2 days and we take a week, we lose. Client expectations are shifting.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="cta-section">
+    <span class="section-number">MELT Atlanta</span>
+    <h2>Ready for Something<br>Unforgettable?</h2>
+    
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">25+</div>
+        <div class="stat-label">Years Strong</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">10K+</div>
+        <div class="stat-label">Events Executed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">10K+</div>
+        <div class="stat-label">Sponsorships</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">20</div>
+        <div class="stat-label">Years with Coke</div>
+      </div>
+    </div>
+    
+    <p style="color:var(--gray);max-width:500px;margin:0 auto;">
+      The agencies that figure out AI first win. We're already ahead because we're having this conversation.
+    </p>
+    <p style="margin-top:2rem;color:var(--gold);font-style:italic;">
+      "Creating Moments That Matter"
+    </p>
+  </section>
+
+  <div class="keyboard-hint">Use ↑ ↓ arrow keys or scroll to navigate</div>
+
+  <script>
+    // Navigation
+    const sections = document.querySelectorAll('section');
+    const dots = document.querySelectorAll('.nav-dot');
+    const progress = document.getElementById('progress');
+    let currentSection = 0;
+    
+    // Update active state on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const index = Array.from(sections).indexOf(entry.target);
+          currentSection = index;
+          dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+          });
+          // Update progress
+          const progressPercent = ((index + 1) / sections.length) * 100;
+          progress.style.width = progressPercent + '%';
         }
-
-        function closeExperience() {
-            const experience = document.getElementById('melt-experience');
-            const btn = document.querySelector('.wow-trigger');
-            
-            experience.style.opacity = '0';
-            setTimeout(() => {
-                experience.classList.remove('active');
-                experience.style.opacity = '';
-                btn.classList.remove('activated');
-                
-                // Reset stats
-                document.querySelectorAll('.stat-number').forEach(stat => {
-                    stat.textContent = '0';
-                });
-            }, 500);
+      });
+    }, { threshold: 0.5 });
+    
+    sections.forEach(section => observer.observe(section));
+    
+    // Click navigation
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.dataset.section);
+        sections[index].scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        if (currentSection < sections.length - 1) {
+          sections[currentSection + 1].scrollIntoView({ behavior: 'smooth' });
         }
-
-        function createParticles() {
-            const container = document.getElementById('particles');
-            container.innerHTML = '';
-            
-            const colors = ['#00E5FF', '#FFD93D', '#FF6B4A', '#FFFFFF'];
-            
-            for (let i = 0; i < 80; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const size = Math.random() * 8 + 2;
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                const startX = Math.random() * window.innerWidth;
-                const startY = Math.random() * window.innerHeight;
-                const duration = Math.random() * 3 + 2;
-                const delay = Math.random() * 2;
-                
-                particle.style.cssText = `
-                    width: ${size}px;
-                    height: ${size}px;
-                    background: ${color};
-                    left: ${startX}px;
-                    top: ${startY}px;
-                    opacity: 0;
-                    animation: particleFloat ${duration}s ease-in-out ${delay}s infinite;
-                `;
-                
-                container.appendChild(particle);
-            }
-            
-            // Add keyframes dynamically
-            if (!document.getElementById('particle-styles')) {
-                const style = document.createElement('style');
-                style.id = 'particle-styles';
-                style.textContent = `
-                    @keyframes particleFloat {
-                        0% { opacity: 0; transform: translateY(0) scale(0); }
-                        20% { opacity: 0.8; transform: translateY(-20px) scale(1); }
-                        80% { opacity: 0.8; }
-                        100% { opacity: 0; transform: translateY(-100px) scale(0.5); }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        if (currentSection > 0) {
+          sections[currentSection - 1].scrollIntoView({ behavior: 'smooth' });
         }
+      }
+    });
+  </script>
 
-        function animateStats() {
-            const stats = document.querySelectorAll('.stat-number');
-            
-            stats.forEach(stat => {
-                const target = parseInt(stat.dataset.target);
-                const duration = 2000;
-                const increment = target / (duration / 16);
-                let current = 0;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        clearInterval(timer);
-                        current = target;
-                    }
-                    
-                    if (target >= 1000) {
-                        stat.textContent = Math.floor(current).toLocaleString();
-                    } else {
-                        stat.textContent = Math.floor(current);
-                    }
-                }, 16);
-            });
-        }
-
-        // Smooth scroll for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-        // Escape key to close experience
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeExperience();
-            }
-        });
-    </script>
 </body>
 </html>
